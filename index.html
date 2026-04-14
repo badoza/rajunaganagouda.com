@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,243 +24,155 @@
             font-family: 'Playfair Display', serif;
         }
 
-        .text-gold {
-            color: var(--gold-accent);
+        .text-gold { color: var(--gold-accent); }
+        .border-gold { border-color: var(--gold-accent); }
+        .bg-gold { background-color: var(--gold-accent); }
+
+        /* Smooth fade for page transitions */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
         }
-        
-        .border-gold {
-            border-color: var(--gold-accent);
+        .page-section.active {
+            display: block;
         }
 
-        .bg-gold {
-            background-color: var(--gold-accent);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Smooth reveal animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gold-accent); 
+        /* Slider transitions */
+        .slider-track {
+            transition: transform 0.5s ease-in-out;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-gold selection:text-black">
+<body class="antialiased selection:bg-gold selection:text-black min-h-screen flex flex-col">
 
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-black/80 backdrop-blur-md border-b border-white/5">
+    <nav class="fixed w-full z-50 top-0 bg-black/90 backdrop-blur-md border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="editorial-text text-xl tracking-wide text-white">RAJU NAGANAGOUDA</a>
+            <a href="#" data-target="home" class="nav-link editorial-text text-xl tracking-wide text-white">RAJU NAGANAGOUDA</a>
+            
             <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-400">
-                <a href="#about" class="hover:text-gold transition-colors">About</a>
-                <a href="#expertise" class="hover:text-gold transition-colors">Expertise</a>
-                <a href="#work" class="hover:text-gold transition-colors">Showreel</a>
-                <a href="#contact" class="hover:text-gold transition-colors">Connect</a>
+                <a href="#" data-target="home" class="nav-link hover:text-gold transition-colors text-gold">Home</a>
+                <a href="#" data-target="about" class="nav-link hover:text-gold transition-colors">About & Expertise</a>
+                <a href="#" data-target="work" class="nav-link hover:text-gold transition-colors">Showreel</a>
+                <a href="#" data-target="contact" class="nav-link hover:text-gold transition-colors">Connect</a>
             </div>
+            
             <button class="md:hidden text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
     </nav>
 
-    <header class="relative h-screen flex items-center justify-center overflow-hidden">
-        <video autoplay loop muted playsinline class="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover opacity-40">
-            <source src="https://cdn.pixabay.com/video/2023/10/22/186105-877014605_large.mp4" type="video/mp4" />
-        </video>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#050505] z-10"></div>
-        
-        <div class="relative z-20 text-center px-6 max-w-4xl mx-auto mt-20 fade-in">
-            <p class="text-gold uppercase tracking-[0.3em] text-xs md:text-sm mb-6">AI-Powered Video Creator</p>
-            <h1 class="editorial-text text-5xl md:text-7xl lg:text-8xl font-medium leading-tight mb-6">
-                Cinematic Craft.<br>
-                <span class="italic text-gray-300">Performance-Driven Results.</span>
-            </h1>
-            <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-                I create high-impact video content where cinematic storytelling meets AI-powered production.
-            </p>
-            <a href="#work" class="inline-block border border-gold text-gold px-8 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300">
-                Watch Showreel
-            </a>
-        </div>
-    </header>
+    <main class="flex-grow pt-20">
 
-    <section id="expertise" class="py-24 px-6 border-b border-white/5 relative">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div class="fade-in">
-                <h2 class="editorial-text text-4xl md:text-5xl mb-6">Built at the intersection of story, systems, and scale.</h2>
-                <div class="w-16 h-[1px] bg-gold mb-8"></div>
-                <p class="text-gray-400 font-light leading-relaxed mb-6">
-                    With over a decade of experience across film, television, and digital media, I design and direct projects that combine traditional filmmaking craft with advanced AI workflows. I transform ideas into visually compelling, performance-ready content for modern audiences.
-                </p>
+        <section id="home" class="page-section active h-[calc(100vh-80px)] relative flex items-center justify-center overflow-hidden">
+            <video id="hero-video" loop muted playsinline class="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover opacity-40">
+                <source src="https://cdn.pixabay.com/video/2023/10/22/186105-877014605_large.mp4" type="video/mp4" />
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#050505] z-10"></div>
+            
+            <div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
+                <p class="text-gold uppercase tracking-[0.3em] text-xs md:text-sm mb-6">AI-Powered Video Creator</p>
+                <h1 class="editorial-text text-5xl md:text-7xl font-medium leading-tight mb-6">
+                    Cinematic Craft.<br>
+                    <span class="italic text-gray-300">Performance-Driven Results.</span>
+                </h1>
+                <button data-target="work" class="nav-link inline-block border border-gold text-gold px-8 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300">
+                    Watch Showreel
+                </button>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 fade-in">
-                <div class="p-6 border border-white/10 hover:border-gold/50 transition-colors bg-white/[0.02]">
-                    <h3 class="editorial-text text-xl mb-3 text-gold">AI Filmmaking</h3>
-                    <p class="text-sm text-gray-500 font-light">Transforming narrative concepts into stunning visual realities using state-of-the-art generative tools.</p>
+        </section>
+
+        <section id="about" class="page-section py-16 px-6">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="editorial-text text-4xl md:text-5xl mb-4">Story, Systems, & Scale</h2>
+                    <div class="w-16 h-[1px] bg-gold mx-auto mb-8"></div>
+                    <p class="text-gray-400 font-light leading-relaxed max-w-2xl mx-auto">
+                        With over a decade of experience across film, television, and digital media, I combine traditional filmmaking craft with advanced AI workflows.
+                    </p>
                 </div>
-                <div class="p-6 border border-white/10 hover:border-gold/50 transition-colors bg-white/[0.02]">
-                    <h3 class="editorial-text text-xl mb-3 text-gold">Visual Storytelling</h3>
-                    <p class="text-sm text-gray-500 font-light">Crafting compelling visual arcs that engage, retain, and move modern audiences.</p>
-                </div>
-                <div class="p-6 border border-white/10 hover:border-gold/50 transition-colors bg-white/[0.02]">
-                    <h3 class="editorial-text text-xl mb-3 text-gold">Screenwriting</h3>
-                    <p class="text-sm text-gray-500 font-light">Structuring high-impact dramatic beats and episodic narratives tailored for scale.</p>
-                </div>
-                <div class="p-6 border border-white/10 hover:border-gold/50 transition-colors bg-white/[0.02]">
-                    <h3 class="editorial-text text-xl mb-3 text-gold">Script Supervision</h3>
-                    <p class="text-sm text-gray-500 font-light">Ensuring thematic consistency and emotional peaks align perfectly with visual outputs.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+                    <div class="p-8 border border-white/10 bg-white/[0.02]">
+                        <h3 class="editorial-text text-2xl mb-3 text-gold">AI Filmmaking</h3>
+                        <p class="text-gray-400 font-light">Transforming narrative concepts into stunning visual realities using state-of-the-art generative tools like Midjourney and Stable Diffusion.</p>
+                    </div>
+                    <div class="p-8 border border-white/10 bg-white/[0.02]">
+                        <h3 class="editorial-text text-2xl mb-3 text-gold">Screenwriting</h3>
+                        <p class="text-gray-400 font-light">Structuring high-impact dramatic beats and episodic narratives tailored for modern audiences and high-frequency production.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="about" class="py-24 px-6 bg-[#0a0a0a]">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-20 fade-in">
-                <p class="text-gold uppercase tracking-widest text-xs mb-4">Latest Insights</p>
-                <h2 class="editorial-text text-4xl md:text-5xl">My Journey</h2>
-            </div>
+        <section id="work" class="page-section py-12 px-6 h-[calc(100vh-80px)] flex flex-col justify-center">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="text-center mb-8">
+                    <h2 class="editorial-text text-4xl md:text-5xl">My Work</h2>
+                    <p class="text-gray-500 font-light mt-2">Swipe or click to view projects.</p>
+                </div>
 
-            <div class="space-y-16">
-                <div class="border-l border-gold/30 pl-8 relative fade-in">
-                    <div class="absolute w-3 h-3 bg-gold rounded-full -left-[6.5px] top-2"></div>
-                    <h3 class="editorial-text text-2xl mb-2">Pocket FM</h3>
-                    <p class="text-gold text-sm tracking-wider uppercase mb-4">Lead AI-Powered Visual Production</p>
-                    <p class="text-gray-400 font-light mb-4">Delivering high-frequency cinematic assets through structured generative workflows for serialized storytelling.</p>
-                    <div class="bg-black border border-white/5 p-6 mt-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="text-white text-sm uppercase tracking-wider mb-3 border-b border-white/10 pb-2">Script Intake & Breakdown</h4>
-                                <ul class="text-gray-500 text-sm font-light space-y-2 list-disc pl-4">
-                                    <li>Analyze screenplay beats</li>
-                                    <li>Identify emotional peaks</li>
-                                    <li>Extract visual moments</li>
-                                    <li>Create scene-level metadata tags</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="text-white text-sm uppercase tracking-wider mb-3 border-b border-white/10 pb-2">Visual Development</h4>
-                                <ul class="text-gray-500 text-sm font-light space-y-2 list-disc pl-4">
-                                    <li>Build base visual references</li>
-                                    <li>Generate style frames</li>
-                                    <li>Develop consistent cinematic tone</li>
-                                </ul>
+                <div class="relative border border-white/10 bg-black aspect-video overflow-hidden group">
+                    
+                    <div id="slider-track" class="slider-track flex h-full w-full">
+                        
+                        <div class="w-full flex-shrink-0 h-full relative">
+                            <video class="slider-video w-full h-full object-cover opacity-70" loop muted playsinline>
+                                <source src="https://cdn.pixabay.com/video/2020/05/25/40141-424888126_large.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute bottom-10 left-10 z-20">
+                                <h3 class="editorial-text text-3xl text-white mb-2">Creative-Ad</h3>
+                                <p class="text-gold text-sm tracking-widest uppercase">AI Commercial</p>
                             </div>
                         </div>
-                        <div class="mt-6 pt-4 border-t border-white/10 flex flex-wrap gap-3">
-                            <span class="text-xs tracking-widest uppercase text-gold bg-gold/10 px-3 py-1">Midjourney</span>
-                            <span class="text-xs tracking-widest uppercase text-gold bg-gold/10 px-3 py-1">Stable Diffusion</span>
-                            <span class="text-xs tracking-widest uppercase text-gold bg-gold/10 px-3 py-1">Nano Banana 2</span>
+
+                        <div class="w-full flex-shrink-0 h-full relative">
+                            <video class="slider-video w-full h-full object-cover opacity-70" loop muted playsinline>
+                                <source src="https://cdn.pixabay.com/video/2021/08/25/86259-592817814_large.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute bottom-10 left-10 z-20">
+                                <h3 class="editorial-text text-3xl text-white mb-2">Itchy Boots</h3>
+                                <p class="text-gold text-sm tracking-widest uppercase">Visual Storytelling</p>
+                            </div>
                         </div>
+
                     </div>
-                </div>
 
-                <div class="border-l border-gold/30 pl-8 relative fade-in">
-                    <div class="absolute w-3 h-3 bg-white/20 rounded-full -left-[6.5px] top-2"></div>
-                    <h3 class="editorial-text text-2xl mb-2">Bigg Boss Kannada – Season 11</h3>
-                    <p class="text-gray-500 text-sm tracking-wider uppercase mb-4">Show Writer (Endemol Shine India)</p>
-                    <p class="text-gray-400 font-light">Contributed to narrative structuring and episodic scripting for one of Karnataka's highest-rated prime-time reality shows. Developed task letters, announcements, promotional segments, and dramatic beats in high-intensity broadcast cycles.</p>
-                </div>
-
-                <div class="border-l border-gold/30 pl-8 relative fade-in">
-                    <div class="absolute w-3 h-3 bg-white/20 rounded-full -left-[6.5px] top-2"></div>
-                    <h3 class="editorial-text text-2xl mb-2">Film Director Origins</h3>
-                    <p class="text-gray-500 text-sm tracking-wider uppercase mb-4">Kannada & Telugu Film Industries</p>
-                    <p class="text-gray-400 font-light">Over the past decade, the journey evolved across feature films, independent projects, and broadcast environments. Began in script development, screenplay research, and on-set execution in fast-paced production ecosystems.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="work" class="py-24 px-6 border-t border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-16 fade-in">
-                <div>
-                    <h2 class="editorial-text text-4xl md:text-5xl mb-2">My Work</h2>
-                    <p class="text-gray-500 font-light">AI Filmmaker bridging art and technology.</p>
-                </div>
-                <a href="#" class="hidden md:inline-block text-gold text-sm tracking-widest uppercase hover:text-white transition-colors border-b border-gold pb-1">All Videos</a>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="group relative aspect-video bg-black border border-white/10 overflow-hidden cursor-pointer fade-in">
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-60 group-hover:scale-105 transition-transform duration-700"></div>
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
-                    <div class="absolute inset-0 flex flex-col justify-center items-center">
-                        <div class="w-16 h-16 rounded-full border border-gold flex items-center justify-center mb-4 group-hover:bg-gold transition-colors duration-300">
-                            <svg class="w-6 h-6 text-gold group-hover:text-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                        <h3 class="editorial-text text-2xl text-white">Creative-Ad</h3>
-                    </div>
-                </div>
-
-                <div class="group relative aspect-video bg-black border border-white/10 overflow-hidden cursor-pointer fade-in">
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1535016120720-40c746a6580c?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-60 group-hover:scale-105 transition-transform duration-700"></div>
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
-                    <div class="absolute inset-0 flex flex-col justify-center items-center">
-                        <div class="w-16 h-16 rounded-full border border-gold flex items-center justify-center mb-4 group-hover:bg-gold transition-colors duration-300">
-                            <svg class="w-6 h-6 text-gold group-hover:text-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                        <h3 class="editorial-text text-2xl text-white">Itchy Boots</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact" class="bg-[#030303] pt-24 pb-12 px-6 border-t border-white/5">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
-            <div class="fade-in">
-                <h2 class="editorial-text text-4xl md:text-5xl mb-6">Let's Connect</h2>
-                <p class="text-gray-400 font-light mb-8 max-w-md">
-                    Specializing in utilizing AI to create captivating narratives and films. Pushing the boundaries of storytelling by merging artistic vision with cutting-edge technology.
-                </p>
-                <div class="space-y-4 text-sm font-light text-gray-300">
-                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Phone</span> 9380083357</p>
-                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Email</span> dropin.raju@gmail.com</p>
-                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Location</span> Bangalore, IND</p>
-                </div>
-            </div>
-
-            <div class="fade-in">
-                <form class="space-y-6">
-                    <div>
-                        <input type="email" placeholder="Email Address *" required class="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white focus:outline-none focus:border-gold transition-colors font-light placeholder-gray-600">
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="subscribe" class="mt-1 accent-gold bg-transparent border-white/20">
-                        <label for="subscribe" class="text-xs text-gray-500 font-light">Yes, subscribe me to your newsletter. *</label>
-                    </div>
-                    <button type="submit" class="w-full md:w-auto bg-transparent border border-gold text-gold px-10 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300">
-                        Submit
+                    <button id="prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 border border-gold text-gold w-12 h-12 rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-colors z-30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                     </button>
-                </form>
-            </div>
-        </div>
+                    <button id="next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 border border-gold text-gold w-12 h-12 rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-colors z-30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
 
-        <div class="max-w-7xl mx-auto border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 fade-in">
-            <p class="text-xs text-gray-600 tracking-wider">© 2026 AI Filmmaker. All Rights Reserved.</p>
-            <div class="flex gap-6 text-xs text-gray-500 uppercase tracking-widest">
-                <a href="#" class="hover:text-gold transition-colors">Instagram</a>
-                <a href="#" class="hover:text-gold transition-colors">X</a>
-                <a href="#" class="hover:text-gold transition-colors">LinkedIn</a>
+                </div>
             </div>
+        </section>
+
+        <section id="contact" class="page-section py-24 px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="editorial-text text-4xl md:text-5xl mb-8">Let's Connect</h2>
+                <p class="text-gray-400 font-light mb-12">
+                    Pushing the boundaries of storytelling by merging artistic vision with cutting-edge technology. Let's discuss your next project.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center gap-12 text-sm font-light text-gray-300 mb-16">
+                    <p class="flex flex-col items-center gap-2"><span class="text-gold tracking-widest uppercase text-xs">Phone</span> 9380083357</p>
+                    <p class="flex flex-col items-center gap-2"><span class="text-gold tracking-widest uppercase text-xs">Email</span> dropin.raju@gmail.com</p>
+                    <p class="flex flex-col items-center gap-2"><span class="text-gold tracking-widest uppercase text-xs">Location</span> Bangalore, IND</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#030303] py-6 border-t border-white/5 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-xs text-gray-600 tracking-wider">© 2026 AI Filmmaker. All Rights Reserved.</p>
             <p class="text-xs text-gray-600 tracking-wider font-light">
                 Developed by Kunal Dongare
             </p>
@@ -268,25 +180,105 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Navigation & Page Switching Logic ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page-section');
+            const heroVideo = document.getElementById('hero-video');
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+            function switchPage(targetId) {
+                // Hide all pages
+                pages.forEach(page => page.classList.remove('active'));
+                
+                // Show target page
+                const targetPage = document.getElementById(targetId);
+                targetPage.classList.add('active');
+
+                // Update nav highlighting
+                navLinks.forEach(link => {
+                    if(link.getAttribute('data-target') === targetId) {
+                        link.classList.add('text-gold');
+                        link.classList.remove('text-gray-400');
+                    } else {
+                        link.classList.remove('text-gold');
+                        link.classList.add('text-gray-400');
                     }
                 });
-            }, observerOptions);
 
-            document.querySelectorAll('.fade-in').forEach(element => {
-                observer.observe(element);
+                // Global Video Management
+                manageVideos(targetId);
+            }
+
+            // Click events for navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    switchPage(targetId);
+                });
             });
+
+
+            // --- 2. Video Slider Logic ---
+            const track = document.getElementById('slider-track');
+            const slides = document.querySelectorAll('.slider-video');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            let currentSlide = 0;
+
+            function updateSlider() {
+                // Move the track
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Handle autoplaying the active slide and pausing others
+                slides.forEach((video, index) => {
+                    if (index === currentSlide) {
+                        video.play().catch(e => console.log("Autoplay blocked:", e));
+                    } else {
+                        video.pause();
+                        video.currentTime = 0; // Optional: reset video to start
+                    }
+                });
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    updateSlider();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlider();
+                }
+            });
+
+
+            // --- 3. Smart Video Play/Pause based on Active Page ---
+            function manageVideos(activePageId) {
+                // If we are on home, play hero video, pause slider videos
+                if (activePageId === 'home') {
+                    heroVideo.play().catch(e => console.log("Autoplay blocked"));
+                    slides.forEach(v => v.pause());
+                } 
+                // If we are on work/showreel, pause hero, play active slider video
+                else if (activePageId === 'work') {
+                    heroVideo.pause();
+                    updateSlider(); // This triggers the correct slider video to play
+                } 
+                // If on any other page, pause EVERYTHING to save performance
+                else {
+                    heroVideo.pause();
+                    slides.forEach(v => v.pause());
+                }
+            }
+
+            // Initialize app state on load
+            switchPage('home');
+            heroVideo.play().catch(e => console.log("Autoplay blocked by browser. User interaction needed."));
         });
     </script>
 </body>
