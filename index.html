@@ -67,6 +67,7 @@
         .magnetic-btn {
             display: inline-block; position: relative; z-index: 1; overflow: hidden;
             transition: color 0.4s var(--easing), transform 0.3s ease-out;
+            cursor: pointer;
         }
         .magnetic-btn::before {
             content: ''; position: absolute; top: 100%; left: 0; right: 0; bottom: 0;
@@ -127,7 +128,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             
             <a href="#" class="nav-link flex items-center z-50 relative group" data-target="home-page">
-                <img src="raju-nagan-logo.jpg" alt="Raju Nagan Logo" 
+                <img src="RAJU_NAGAN_logo_202604141209%20(1).jpg" alt="Raju Nagan Logo" 
                      class="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105" 
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 
@@ -205,7 +206,7 @@
                         
                         <div class="nav-link premium-badge inline-flex items-center gap-3 px-8 py-3 md:py-4 rounded-full cursor-pointer hover:scale-105 transition-transform duration-300" data-target="contact-page">
                             <span class="w-2 h-2 rounded-full bg-gold animate-pulse shadow-[0_0_8px_#C5A880]"></span>
-                            <span class="text-gray-300 tracking-[0.15em] text-[10px] md:text-xs uppercase font-light">
+                            <span class="text-gray-300 tracking-[0.15em] text-[10px] md:text-xs uppercase font-light pointer-events-none">
                                 Video Starts From <span class="editorial-text text-gold text-sm md:text-lg ml-2 font-medium">$9</span>
                             </span>
                         </div>
@@ -225,7 +226,6 @@
             
             <div class="mb-32">
                 <div class="text-center mb-16 animate-on-scroll">
-                    <p class="text-gold uppercase tracking-widest text-xs mb-4">Expertise</p>
                     <h2 class="editorial-text text-4xl md:text-6xl">Services Provided</h2>
                     <div class="w-px h-16 bg-gradient-to-b from-gold to-transparent mx-auto mt-8"></div>
                 </div>
@@ -349,17 +349,21 @@
 
             <div class="animate-on-scroll flex items-center">
                 <form id="contactForm" class="w-full space-y-10">
+                    
                     <div class="relative">
                         <input type="email" id="userEmail" placeholder=" " required class="block w-full px-0 py-4 text-white bg-transparent border-0 border-b border-white/20 appearance-none focus:outline-none focus:ring-0 focus:border-gold peer transition-colors text-base md:text-lg">
                         <label for="userEmail" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 tracking-widest uppercase">Your Email Address</label>
                     </div>
+
                     <div class="relative mt-10">
-                        <textarea id="userMessage" rows="4" placeholder=" " required class="block w-full px-0 py-4 text-white bg-transparent border-0 border-b border-white/20 appearance-none focus:outline-none focus:ring-0 focus:border-gold peer transition-colors text-base md:text-lg resize-none"></textarea>
+                        <textarea id="userMessage" rows="3" placeholder=" " required class="block w-full px-0 py-4 text-white bg-transparent border-0 border-b border-white/20 appearance-none focus:outline-none focus:ring-0 focus:border-gold peer transition-colors text-base md:text-lg resize-none"></textarea>
                         <label for="userMessage" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 tracking-widest uppercase">Your Message</label>
                     </div>
+
                     <button type="submit" class="magnetic-btn w-full border border-white/20 text-white px-10 py-5 uppercase tracking-widest text-xs md:text-sm mt-4 hover:border-gold rounded-sm">
                         Send Message
                     </button>
+
                 </form>
             </div>
         </div>
@@ -387,17 +391,25 @@
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+                e.preventDefault(); // Stop page from refreshing
                 
-                const email = document.getElementById('userEmail').value;
-                const message = document.getElementById('userMessage').value;
+                const userEmail = document.getElementById('userEmail').value;
+                const userMessage = document.getElementById('userMessage').value;
                 
                 const targetEmail = 'dropin.raju@gmail.com';
-                const subject = encodeURIComponent('Inquiry from ' + email);
-                const body = encodeURIComponent(message + "\n\n---\nSender Email: " + email);
+                const subject = encodeURIComponent('Inquiry from Website: ' + userEmail);
                 
-                // Open default mail client with prefilled data
-                window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+                // Formats the body to clearly show the user's message and their return email
+                const bodyText = userMessage + "\n\n---------------------------\nSender's Email: " + userEmail;
+                const body = encodeURIComponent(bodyText);
+                
+                // Create the mailto link
+                const mailtoLink = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+                
+                // Open the user's default email client
+                const tempLink = document.createElement('a');
+                tempLink.href = mailtoLink;
+                tempLink.click();
             });
         }
 
