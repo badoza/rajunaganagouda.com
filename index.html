@@ -48,22 +48,27 @@
 
         @keyframes floatingOrb {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
         }
 
         .mega-gold-badge {
             position: relative; background: linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(5,5,5,1) 100%);
-            border: 2px solid var(--gold-accent); border-radius: 20px; padding: 2rem 3rem;
+            border: 2px solid var(--gold-accent); border-radius: 20px; padding: 1.5rem 2.5rem;
             animation: floatingOrb 5s ease-in-out infinite, haloPulse 4s ease-in-out infinite;
             cursor: pointer; z-index: 30; transition: all 0.4s var(--easing);
         }
-        .mega-gold-badge:hover { border-color: var(--bright-gold); transform: scale(1.05) translateY(-10px) !important; }
+        .mega-gold-badge:hover { border-color: var(--bright-gold); transform: scale(1.05) translateY(-5px) !important; }
 
         .price-text {
-            font-size: 5rem; font-weight: 800; line-height: 1;
+            font-size: 4rem; font-weight: 800; line-height: 1;
             background: linear-gradient(to bottom, #FFF, var(--bright-gold), var(--gold-accent));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+        }
+
+        @media (min-width: 768px) {
+            .mega-gold-badge { padding: 1.5rem 3rem; }
+            .price-text { font-size: 5rem; }
         }
 
         /* Sparkle Particles */
@@ -112,6 +117,26 @@
         
         #mobile-menu { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.5s var(--easing), opacity 0.4s ease; opacity: 0; display: flex; }
         #mobile-menu.menu-open { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+
+        .animate-breathe { animation: slowBreathe 6s ease-in-out infinite; }
+        @keyframes slowBreathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+        .service-item { display: inline-block; position: relative; transition: all 0.5s var(--easing); }
+        .service-item::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 1px; background: var(--gold-accent); transition: all 0.5s var(--easing); transform: translateX(-50%); }
+        .service-item:hover { color: var(--gold-accent); transform: scale(1.05); text-shadow: 0 0 20px rgba(197, 168, 128, 0.4); }
+        .service-item:hover::after { width: 100%; }
+
+        .magnetic-btn { display: inline-block; position: relative; z-index: 1; overflow: hidden; transition: color 0.4s var(--easing), transform 0.3s ease-out; cursor: pointer; }
+        .magnetic-btn::before { content: ''; position: absolute; top: 100%; left: 0; right: 0; bottom: 0; background: var(--gold-accent); z-index: -1; transition: top 0.4s var(--easing); }
+        .magnetic-btn:hover::before { top: 0; }
+        .magnetic-btn:hover { color: #000; border-color: var(--gold-accent); }
+
+        .gradient-text-animate {
+            background: linear-gradient(90deg, #fff, var(--gold-accent), #fff);
+            background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text;
+            animation: shine 5s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
 <body class="antialiased selection:bg-gold selection:text-black">
@@ -119,7 +144,7 @@
     <nav class="fixed w-full z-50 top-0 transition-all duration-500 py-2 border-b border-white/5" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="nav-link flex items-center z-50 relative group" data-target="home-page">
-                <img src="RAJU_NAGAN_logo_202604141209%20(1).jpg" alt="Raju Nagan Logo" class="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='logo.jpg'; this.onerror=function(){this.style.display='none'; this.nextElementSibling.style.display='block';};">
+                <img src="raju-nagan-logo.jpg" alt="Raju Nagan Logo" class="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; this.nextElementSibling.style.display='block';};">
                 <span class="editorial-text text-xl md:text-2xl tracking-[0.2em] text-white hidden group-hover:text-gold transition-colors duration-300">RAJU NAGAN</span>
             </a>
             <div class="hidden md:flex space-x-10 text-xs tracking-[0.2em] uppercase text-gray-400">
@@ -141,7 +166,8 @@
     </nav>
 
     <main id="home-page" class="page-view active !pt-0 relative">
-        <header class="relative h-screen flex flex-col items-center justify-center overflow-hidden pt-10" id="hero-header">
+        <header class="relative min-h-screen py-24 flex flex-col items-center justify-center overflow-hidden" id="hero-header">
+            
             <div id="cursor-glow"></div>
             <div id="parallax-video" class="absolute inset-0 w-full h-full scale-[1.05]">
                 <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-20">
@@ -150,39 +176,39 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#030303]/90 via-black/40 to-[#030303] z-10 pointer-events-none"></div>
 
-            <div class="relative z-20 text-center px-4 md:px-6 w-full max-w-5xl mx-auto flex flex-col items-center justify-center h-full">
+            <div class="relative z-20 text-center px-4 w-full max-w-6xl mx-auto flex flex-col items-center justify-center h-full">
                 
-                <div class="mask-container mb-6">
+                <div class="mask-container mb-4 md:mb-6 mt-12 md:mt-8">
                     <p class="mask-reveal text-gold uppercase tracking-[0.4em] text-[10px] md:text-xs font-bold">The Future of AI Production</p>
                 </div>
                 
-                <h1 class="editorial-text text-5xl md:text-7xl lg:text-[7rem] font-medium leading-[1] mb-12">
-                    <span class="mask-container"><span class="mask-reveal delay-1 text-white">Cinematic Craft.</span></span><br>
+                <h1 class="editorial-text text-5xl md:text-6xl lg:text-[6.5rem] font-medium leading-[1.1] mb-8 md:mb-10">
+                    <span class="mask-container"><span class="mask-reveal delay-1 text-white gradient-text-animate">Cinematic Craft.</span></span><br>
                     <span class="mask-container"><span class="mask-reveal delay-2 italic text-gray-500">Performance-Driven.</span></span>
                 </h1>
 
-                <div class="mask-container w-full max-w-4xl mx-auto mb-16">
-                    <div class="mask-reveal delay-3 flex flex-wrap justify-center items-center gap-4 md:gap-8 px-4">
+                <div class="mask-container w-full max-w-4xl mx-auto mb-10 md:mb-14">
+                    <div class="mask-reveal delay-3 animate-breathe flex flex-wrap justify-center items-center gap-4 md:gap-8 px-4">
                         <span class="service-item text-white text-[11px] md:text-sm tracking-[0.2em] uppercase font-light">AI Filmmaking</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden sm:block"></span>
                         <span class="service-item text-white text-[11px] md:text-sm tracking-[0.2em] uppercase font-light">Visual Storytelling</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden md:block"></span>
-                        <span class="service-item text-white text-[11px] md:text-sm tracking-[0.2em] uppercase font-light">Screenwriting</span>
-                        <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden sm:block"></span>
-                        <span class="service-item text-white text-[11px] md:text-sm tracking-[0.2em] uppercase font-light">AI Ad-Films</span>
+                        <span class="service-item text-white text-[11px] md:text-sm tracking-[0.2em] uppercase font-light mt-2 lg:mt-0">Screenwriting</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden sm:block mt-2 lg:mt-0"></span>
+                        <span class="service-item text-white text-[11px] md:text-sm tracking-[0.2em] uppercase font-light mt-2 lg:mt-0">AI Ad-Films</span>
                     </div>
                 </div>
                 
-                <div class="mask-container">
-                    <div class="mask-reveal delay-4 flex flex-col items-center gap-12">
-                        <div class="mega-gold-badge nav-link magnetic-btn" data-target="contact-page">
+                <div class="mask-container mt-2">
+                    <div class="mask-reveal delay-4 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+                        
+                        <div class="mega-gold-badge nav-link magnetic-btn flex flex-col items-center justify-center" data-target="contact-page">
                             <div class="absolute inset-0" id="sparkle-container"></div>
-                            
-                            <p class="text-white uppercase tracking-[0.3em] text-[10px] md:text-xs mb-2 opacity-80">Video Starts From</p>
-                            <div class="price-text">$9</div>
+                            <p class="text-white uppercase tracking-[0.3em] text-[10px] md:text-xs mb-2 opacity-80 pointer-events-none">Video Starts From</p>
+                            <div class="price-text pointer-events-none">$9</div>
                         </div>
 
-                        <button class="nav-link border-2 border-gold/20 text-gold px-12 py-5 uppercase tracking-[0.3em] text-[10px] md:text-xs hover:border-gold hover:bg-gold hover:text-black transition-all duration-500" data-target="showreel-page">
+                        <button class="nav-link magnetic-btn border border-gold text-gold px-10 py-5 uppercase tracking-[0.25em] text-[10px] md:text-xs hover:border-gold hover:bg-gold hover:text-black transition-all duration-500" data-target="showreel-page">
                             Explore Showreel
                         </button>
                     </div>
@@ -326,7 +352,7 @@
             <div class="video-carousel" id="carousel">
                 <div class="video-slide" data-yt-id="XLj2L7Ide-o">
                     <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
-                    <div class="absolute inset-0 slide-overlay z-10"></div>
+                    <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
                     <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                         <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">01 / 04</span>
                         <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Cinematic<br>Storytelling</h3>
@@ -334,7 +360,7 @@
                 </div>
                 <div class="video-slide" data-yt-id="YTZXqw2ON-E">
                     <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
-                    <div class="absolute inset-0 slide-overlay z-10"></div>
+                    <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
                     <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                         <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">02 / 04</span>
                         <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Ad<br>Campaign</h3>
@@ -342,7 +368,7 @@
                 </div>
                 <div class="video-slide" data-yt-id="b4weHgNwWtU">
                     <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
-                    <div class="absolute inset-0 slide-overlay z-10"></div>
+                    <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
                     <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                         <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">03 / 04</span>
                         <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Brand<br>Vision</h3>
@@ -350,7 +376,7 @@
                 </div>
                 <div class="video-slide" data-yt-id="NqDQ6lM1FUc">
                     <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
-                    <div class="absolute inset-0 slide-overlay z-10"></div>
+                    <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
                     <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                         <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">04 / 04</span>
                         <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Visual<br>Symphony</h3>
@@ -365,10 +391,10 @@
             <div class="animate-on-scroll">
                 <p class="text-gold uppercase tracking-widest text-xs md:text-sm mb-4">Inquiries</p>
                 <h2 class="editorial-text text-5xl md:text-7xl mb-8">Let's Create<br><span class="italic text-gray-500 font-light">Together.</span></h2>
-                <div class="space-y-6 text-sm text-gray-400">
-                    <p class="flex items-center gap-6 border-b border-white/10 pb-5">Phone +91 9380083357</p>
-                    <p class="flex items-center gap-6 border-b border-white/10 pb-5">Email dropin.raju@gmail.com</p>
-                    <p class="flex items-center gap-6 border-b border-white/10 pb-5">Base Bangalore, IND</p>
+                <div class="space-y-6 text-sm md:text-base font-light text-gray-400">
+                    <p class="flex items-center gap-6 border-b border-white/10 pb-5"><span class="text-white tracking-widest uppercase text-xs sm:w-20">Phone</span> +91 9380083357</p>
+                    <p class="flex items-center gap-6 border-b border-white/10 pb-5"><span class="text-white tracking-widest uppercase text-xs sm:w-20">Email</span> dropin.raju@gmail.com</p>
+                    <p class="flex items-center gap-6 border-b border-white/10 pb-5"><span class="text-white tracking-widest uppercase text-xs sm:w-20">Base</span> Bangalore, IND</p>
                 </div>
             </div>
             <div class="animate-on-scroll flex items-center">
@@ -522,7 +548,6 @@
                             if (entry.isIntersecting) {
                                 entry.target.classList.add('is-playing');
                                 entry.target.ytPlayer?.playVideo();
-                                entry.target.ytPlayer?.unMute();
                             } else {
                                 entry.target.classList.remove('is-playing');
                                 entry.target.ytPlayer?.pauseVideo();
