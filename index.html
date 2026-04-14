@@ -28,257 +28,310 @@
         .border-gold { border-color: var(--gold-accent); }
         .bg-gold { background-color: var(--gold-accent); }
 
-        /* Smooth fade for page transitions */
-        .page-section {
+        /* Virtual Page Navigation System */
+        .page-view {
             display: none;
-            animation: fadeIn 0.6s ease-in-out;
+            opacity: 0;
+            min-height: 100vh;
+            padding-top: 80px; /* Offset for fixed header */
         }
-        .page-section.active {
+        .page-view.active {
             display: block;
+            animation: fadeInPage 0.6s ease-out forwards;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInPage {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Slider transitions */
-        .slider-track {
-            transition: transform 0.5s ease-in-out;
+        /* Swipeable Video Carousel (App-like feel) */
+        .video-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
         }
+        .video-carousel::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        
+        .video-slide {
+            flex: 0 0 100%; /* Full width slides */
+            scroll-snap-align: center;
+            position: relative;
+            height: 70vh; /* Adjust height as needed */
+            min-height: 500px;
+            background: #000;
+        }
+
+        .video-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Prevents stretching/misalignment */
+            opacity: 0.6;
+            transition: opacity 0.5s;
+        }
+        
+        .video-slide.is-playing video {
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar for normal elements */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; }
     </style>
 </head>
-<body class="antialiased selection:bg-gold selection:text-black min-h-screen flex flex-col">
+<body class="antialiased selection:bg-gold selection:text-black">
 
     <nav class="fixed w-full z-50 top-0 bg-black/90 backdrop-blur-md border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" data-target="home" class="nav-link editorial-text text-xl tracking-wide text-white">RAJU NAGANAGOUDA</a>
+            <a href="#" class="nav-link editorial-text text-xl tracking-wide text-white" data-target="home-page">
+                RAJU NAGANAGOUDA
+            </a>
             
             <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-400">
-                <a href="#" data-target="home" class="nav-link hover:text-gold transition-colors text-gold">Home</a>
-                <a href="#" data-target="about" class="nav-link hover:text-gold transition-colors">About & Expertise</a>
-                <a href="#" data-target="work" class="nav-link hover:text-gold transition-colors">Showreel</a>
-                <a href="#" data-target="contact" class="nav-link hover:text-gold transition-colors">Connect</a>
+                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="home-page">Home</a>
+                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="about-page">About</a>
+                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="showreel-page">Showreel</a>
+                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="contact-page">Contact</a>
             </div>
             
-            <button class="md:hidden text-white focus:outline-none">
+            <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-black border-b border-white/10 flex-col items-center py-4 space-y-4 text-sm tracking-widest uppercase text-gray-400 md:hidden">
+            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="home-page">Home</a>
+            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="about-page">About</a>
+            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="showreel-page">Showreel</a>
+            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="contact-page">Contact</a>
+        </div>
     </nav>
 
-    <main class="flex-grow pt-20">
-
-        <section id="home" class="page-section active h-[calc(100vh-80px)] relative flex items-center justify-center overflow-hidden">
-            <video id="hero-video" loop muted playsinline class="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover opacity-40">
+    <main id="home-page" class="page-view active !pt-0">
+        <header class="relative h-screen flex items-center justify-center overflow-hidden">
+            <video autoplay loop muted playsinline class="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover opacity-40">
                 <source src="https://cdn.pixabay.com/video/2023/10/22/186105-877014605_large.mp4" type="video/mp4" />
             </video>
             <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#050505] z-10"></div>
             
-            <div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
+            <div class="relative z-20 text-center px-6 max-w-4xl mx-auto mt-20">
                 <p class="text-gold uppercase tracking-[0.3em] text-xs md:text-sm mb-6">AI-Powered Video Creator</p>
-                <h1 class="editorial-text text-5xl md:text-7xl font-medium leading-tight mb-6">
+                <h1 class="editorial-text text-5xl md:text-7xl lg:text-8xl font-medium leading-tight mb-6">
                     Cinematic Craft.<br>
                     <span class="italic text-gray-300">Performance-Driven Results.</span>
                 </h1>
-                <button data-target="work" class="nav-link inline-block border border-gold text-gold px-8 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300">
-                    Watch Showreel
+                <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
+                    I create high-impact video content where cinematic storytelling meets AI-powered production.
+                </p>
+                <button class="nav-link inline-block border border-gold text-gold px-8 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300" data-target="showreel-page">
+                    Explore Showreel
                 </button>
             </div>
-        </section>
-
-        <section id="about" class="page-section py-16 px-6">
-            <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="editorial-text text-4xl md:text-5xl mb-4">Story, Systems, & Scale</h2>
-                    <div class="w-16 h-[1px] bg-gold mx-auto mb-8"></div>
-                    <p class="text-gray-400 font-light leading-relaxed max-w-2xl mx-auto">
-                        With over a decade of experience across film, television, and digital media, I combine traditional filmmaking craft with advanced AI workflows.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
-                    <div class="p-8 border border-white/10 bg-white/[0.02]">
-                        <h3 class="editorial-text text-2xl mb-3 text-gold">AI Filmmaking</h3>
-                        <p class="text-gray-400 font-light">Transforming narrative concepts into stunning visual realities using state-of-the-art generative tools like Midjourney and Stable Diffusion.</p>
-                    </div>
-                    <div class="p-8 border border-white/10 bg-white/[0.02]">
-                        <h3 class="editorial-text text-2xl mb-3 text-gold">Screenwriting</h3>
-                        <p class="text-gray-400 font-light">Structuring high-impact dramatic beats and episodic narratives tailored for modern audiences and high-frequency production.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="work" class="page-section py-12 px-6 h-[calc(100vh-80px)] flex flex-col justify-center">
-            <div class="max-w-6xl mx-auto w-full">
-                <div class="text-center mb-8">
-                    <h2 class="editorial-text text-4xl md:text-5xl">My Work</h2>
-                    <p class="text-gray-500 font-light mt-2">Swipe or click to view projects.</p>
-                </div>
-
-                <div class="relative border border-white/10 bg-black aspect-video overflow-hidden group">
-                    
-                    <div id="slider-track" class="slider-track flex h-full w-full">
-                        
-                        <div class="w-full flex-shrink-0 h-full relative">
-                            <video class="slider-video w-full h-full object-cover opacity-70" loop muted playsinline>
-                                <source src="https://cdn.pixabay.com/video/2020/05/25/40141-424888126_large.mp4" type="video/mp4">
-                            </video>
-                            <div class="absolute bottom-10 left-10 z-20">
-                                <h3 class="editorial-text text-3xl text-white mb-2">Creative-Ad</h3>
-                                <p class="text-gold text-sm tracking-widest uppercase">AI Commercial</p>
-                            </div>
-                        </div>
-
-                        <div class="w-full flex-shrink-0 h-full relative">
-                            <video class="slider-video w-full h-full object-cover opacity-70" loop muted playsinline>
-                                <source src="https://cdn.pixabay.com/video/2021/08/25/86259-592817814_large.mp4" type="video/mp4">
-                            </video>
-                            <div class="absolute bottom-10 left-10 z-20">
-                                <h3 class="editorial-text text-3xl text-white mb-2">Itchy Boots</h3>
-                                <p class="text-gold text-sm tracking-widest uppercase">Visual Storytelling</p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <button id="prev-btn" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 border border-gold text-gold w-12 h-12 rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-colors z-30">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                    </button>
-                    <button id="next-btn" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 border border-gold text-gold w-12 h-12 rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-colors z-30">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </button>
-
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="page-section py-24 px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="editorial-text text-4xl md:text-5xl mb-8">Let's Connect</h2>
-                <p class="text-gray-400 font-light mb-12">
-                    Pushing the boundaries of storytelling by merging artistic vision with cutting-edge technology. Let's discuss your next project.
-                </p>
-                <div class="flex flex-col md:flex-row justify-center gap-12 text-sm font-light text-gray-300 mb-16">
-                    <p class="flex flex-col items-center gap-2"><span class="text-gold tracking-widest uppercase text-xs">Phone</span> 9380083357</p>
-                    <p class="flex flex-col items-center gap-2"><span class="text-gold tracking-widest uppercase text-xs">Email</span> dropin.raju@gmail.com</p>
-                    <p class="flex flex-col items-center gap-2"><span class="text-gold tracking-widest uppercase text-xs">Location</span> Bangalore, IND</p>
-                </div>
-            </div>
-        </section>
-
+        </header>
     </main>
 
-    <footer class="bg-[#030303] py-6 border-t border-white/5 mt-auto">
+    <main id="about-page" class="page-view bg-[#0a0a0a]">
+        <div class="max-w-5xl mx-auto px-6 py-16">
+            <div class="text-center mb-20">
+                <p class="text-gold uppercase tracking-widest text-xs mb-4">Latest Insights</p>
+                <h2 class="editorial-text text-4xl md:text-5xl">My Journey</h2>
+            </div>
+
+            <div class="space-y-16">
+                <div class="border-l border-gold/30 pl-8 relative">
+                    <div class="absolute w-3 h-3 bg-gold rounded-full -left-[6.5px] top-2"></div>
+                    <h3 class="editorial-text text-2xl mb-2">Pocket FM</h3>
+                    <p class="text-gold text-sm tracking-wider uppercase mb-4">Lead AI-Powered Visual Production</p>
+                    <p class="text-gray-400 font-light mb-4">Delivering high-frequency cinematic assets through structured generative workflows for serialized storytelling.</p>
+                    <div class="bg-black border border-white/5 p-6 mt-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-white text-sm uppercase tracking-wider mb-3 border-b border-white/10 pb-2">Script Intake & Breakdown</h4>
+                                <ul class="text-gray-500 text-sm font-light space-y-2 list-disc pl-4">
+                                    <li>Analyze screenplay beats</li>
+                                    <li>Identify emotional peaks</li>
+                                    <li>Extract visual moments</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-white text-sm uppercase tracking-wider mb-3 border-b border-white/10 pb-2">Visual Development</h4>
+                                <ul class="text-gray-500 text-sm font-light space-y-2 list-disc pl-4">
+                                    <li>Build base visual references</li>
+                                    <li>Generate style frames</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-l border-gold/30 pl-8 relative">
+                    <div class="absolute w-3 h-3 bg-white/20 rounded-full -left-[6.5px] top-2"></div>
+                    <h3 class="editorial-text text-2xl mb-2">Bigg Boss Kannada – Season 11</h3>
+                    <p class="text-gray-500 text-sm tracking-wider uppercase mb-4">Show Writer (Endemol Shine India)</p>
+                    <p class="text-gray-400 font-light">Contributed to narrative structuring and episodic scripting for one of Karnataka's highest-rated prime-time reality shows.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="showreel-page" class="page-view bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <div class="text-center mb-8">
+                <h2 class="editorial-text text-4xl md:text-5xl mb-2">My Work</h2>
+                <p class="text-gray-500 font-light">Swipe or scroll horizontally to explore. Videos play automatically.</p>
+            </div>
+            
+            <div class="relative border border-white/10">
+                <div class="video-carousel" id="carousel">
+                    
+                    <div class="video-slide flex justify-center items-center">
+                        <video src="https://cdn.pixabay.com/video/2020/05/24/40092-425253816_large.mp4" loop playsinline muted></video>
+                        <div class="absolute bottom-10 left-10 z-20 pointer-events-none">
+                            <h3 class="editorial-text text-3xl text-white mb-2 shadow-black drop-shadow-md">Creative-Ad</h3>
+                            <span class="text-xs uppercase tracking-widest text-gold bg-black/50 px-3 py-1 backdrop-blur-sm border border-gold/30">AI Generated</span>
+                        </div>
+                    </div>
+
+                    <div class="video-slide flex justify-center items-center">
+                        <video src="https://cdn.pixabay.com/video/2024/02/25/104692-668028122_large.mp4" loop playsinline muted></video>
+                        <div class="absolute bottom-10 left-10 z-20 pointer-events-none">
+                            <h3 class="editorial-text text-3xl text-white mb-2 shadow-black drop-shadow-md">Itchy Boots</h3>
+                            <span class="text-xs uppercase tracking-widest text-gold bg-black/50 px-3 py-1 backdrop-blur-sm border border-gold/30">Cinematic Edit</span>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white/30 pointer-events-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </div>
+                <div class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/30 pointer-events-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="contact-page" class="page-view bg-[#030303]">
+        <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+                <h2 class="editorial-text text-4xl md:text-5xl mb-6">Let's Connect</h2>
+                <p class="text-gray-400 font-light mb-8 max-w-md">
+                    Specializing in utilizing AI to create captivating narratives and films. Pushing the boundaries of storytelling by merging artistic vision with cutting-edge technology.
+                </p>
+                <div class="space-y-4 text-sm font-light text-gray-300">
+                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Phone</span> 9380083357</p>
+                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Email</span> dropin.raju@gmail.com</p>
+                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Location</span> Bangalore, IND</p>
+                </div>
+            </div>
+
+            <div>
+                <form class="space-y-6" onsubmit="event.preventDefault();">
+                    <div>
+                        <input type="email" placeholder="Email Address *" required class="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white focus:outline-none focus:border-gold transition-colors font-light placeholder-gray-600">
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" id="subscribe" class="mt-1 accent-gold bg-transparent border-white/20">
+                        <label for="subscribe" class="text-xs text-gray-500 font-light">Yes, subscribe me to your newsletter. *</label>
+                    </div>
+                    <button type="submit" class="w-full md:w-auto bg-transparent border border-gold text-gold px-10 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-black border-t border-white/5 py-8">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-xs text-gray-600 tracking-wider">© 2026 AI Filmmaker. All Rights Reserved.</p>
-            <p class="text-xs text-gray-600 tracking-wider font-light">
-                Developed by Kunal Dongare
-            </p>
+            <div class="flex gap-6 text-xs text-gray-500 uppercase tracking-widest">
+                <a href="#" class="hover:text-gold transition-colors">Instagram</a>
+                <a href="#" class="hover:text-gold transition-colors">X</a>
+                <a href="#" class="hover:text-gold transition-colors">LinkedIn</a>
+            </div>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener("DOMContentLoaded", () => {
             
-            // --- 1. Navigation & Page Switching Logic ---
+            // --- 1. VIRTUAL PAGE ROUTING ---
             const navLinks = document.querySelectorAll('.nav-link');
-            const pages = document.querySelectorAll('.page-section');
-            const heroVideo = document.getElementById('hero-video');
+            const pages = document.querySelectorAll('.page-view');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-            function switchPage(targetId) {
-                // Hide all pages
-                pages.forEach(page => page.classList.remove('active'));
-                
-                // Show target page
-                const targetPage = document.getElementById(targetId);
-                targetPage.classList.add('active');
-
-                // Update nav highlighting
-                navLinks.forEach(link => {
-                    if(link.getAttribute('data-target') === targetId) {
-                        link.classList.add('text-gold');
-                        link.classList.remove('text-gray-400');
-                    } else {
-                        link.classList.remove('text-gold');
-                        link.classList.add('text-gray-400');
-                    }
-                });
-
-                // Global Video Management
-                manageVideos(targetId);
-            }
-
-            // Click events for navigation
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
+                    
+                    // Hide mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                    
+                    // Get target page ID
                     const targetId = link.getAttribute('data-target');
-                    switchPage(targetId);
+                    if(!targetId) return;
+
+                    // Remove active state from all pages
+                    pages.forEach(p => p.classList.remove('active'));
+                    
+                    // Activate target page
+                    const targetPage = document.getElementById(targetId);
+                    targetPage.classList.add('active');
+                    
+                    // Scroll to top automatically
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
 
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+            });
 
-            // --- 2. Video Slider Logic ---
-            const track = document.getElementById('slider-track');
-            const slides = document.querySelectorAll('.slider-video');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            let currentSlide = 0;
 
-            function updateSlider() {
-                // Move the track
-                track.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
-                // Handle autoplaying the active slide and pausing others
-                slides.forEach((video, index) => {
-                    if (index === currentSlide) {
-                        video.play().catch(e => console.log("Autoplay blocked:", e));
+            // --- 2. SMART VIDEO SLIDER (Auto Play/Pause) ---
+            const videoSlides = document.querySelectorAll('.video-slide');
+            
+            // Set up an Intersection Observer to watch which slide is visible
+            const observerOptions = {
+                root: document.getElementById('carousel'), // Watch within the carousel container
+                rootMargin: '0px',
+                threshold: 0.6 // Trigger when 60% of the video is visible
+            };
+
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    
+                    if (entry.isIntersecting) {
+                        // Slide is visible: Play video, add full opacity
+                        entry.target.classList.add('is-playing');
+                        // Use a promise catch to handle browser autoplay restrictions gracefully
+                        let playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(error => {
+                                console.log("Autoplay prevented. User interaction required.");
+                            });
+                        }
                     } else {
+                        // Slide is hidden: Pause video, dim opacity
+                        entry.target.classList.remove('is-playing');
                         video.pause();
-                        video.currentTime = 0; // Optional: reset video to start
+                        video.currentTime = 0; // Optional: rewind to start when sliding away
                     }
                 });
-            }
+            }, observerOptions);
 
-            nextBtn.addEventListener('click', () => {
-                if (currentSlide < slides.length - 1) {
-                    currentSlide++;
-                    updateSlider();
-                }
+            // Observe all video slides
+            videoSlides.forEach(slide => {
+                videoObserver.observe(slide);
             });
-
-            prevBtn.addEventListener('click', () => {
-                if (currentSlide > 0) {
-                    currentSlide--;
-                    updateSlider();
-                }
-            });
-
-
-            // --- 3. Smart Video Play/Pause based on Active Page ---
-            function manageVideos(activePageId) {
-                // If we are on home, play hero video, pause slider videos
-                if (activePageId === 'home') {
-                    heroVideo.play().catch(e => console.log("Autoplay blocked"));
-                    slides.forEach(v => v.pause());
-                } 
-                // If we are on work/showreel, pause hero, play active slider video
-                else if (activePageId === 'work') {
-                    heroVideo.pause();
-                    updateSlider(); // This triggers the correct slider video to play
-                } 
-                // If on any other page, pause EVERYTHING to save performance
-                else {
-                    heroVideo.pause();
-                    slides.forEach(v => v.pause());
-                }
-            }
-
-            // Initialize app state on load
-            switchPage('home');
-            heroVideo.play().catch(e => console.log("Autoplay blocked by browser. User interaction needed."));
         });
     </script>
 </body>
