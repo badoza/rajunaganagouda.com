@@ -9,8 +9,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
         
         :root {
-            --bg-color: #050505;
+            --bg-color: #030303;
             --gold-accent: #C5A880;
+            --easing: cubic-bezier(0.77, 0, 0.175, 1); /* Premium cinematic easing */
         }
 
         body {
@@ -18,240 +19,291 @@
             background-color: var(--bg-color);
             color: #f5f5f5;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, .editorial-text {
-            font-family: 'Playfair Display', serif;
-        }
-
+        h1, h2, h3, .editorial-text { font-family: 'Playfair Display', serif; }
         .text-gold { color: var(--gold-accent); }
         .border-gold { border-color: var(--gold-accent); }
         .bg-gold { background-color: var(--gold-accent); }
 
-        /* Virtual Page Navigation System */
+        /* =========================================
+           ARTISTIC ANIMATIONS & TRANSITIONS
+           ========================================= */
+        
+        /* 1. Page Routing Animation */
         .page-view {
             display: none;
             opacity: 0;
             min-height: 100vh;
-            padding-top: 80px; /* Offset for fixed header */
+            padding-top: 80px;
         }
         .page-view.active {
             display: block;
-            animation: fadeInPage 0.6s ease-out forwards;
+            animation: cinematicFadeIn 1.2s var(--easing) forwards;
+        }
+        @keyframes cinematicFadeIn {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(4px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        @keyframes fadeInPage {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 2. Text Mask Reveal (The "Luxury Agency" effect) */
+        .mask-container {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
         }
+        .mask-reveal {
+            display: inline-block;
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s var(--easing), opacity 1s ease;
+        }
+        .page-view.active .mask-reveal, 
+        .is-visible .mask-reveal {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
 
-        /* Swipeable Video Carousel (App-like feel) */
+        /* 3. Button Hover Effect */
+        .btn-artistic {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-artistic::before {
+            content: '';
+            position: absolute;
+            top: 100%; left: 0; right: 0; bottom: 0;
+            background: var(--gold-accent);
+            z-index: -1;
+            transition: top 0.4s var(--easing);
+        }
+        .btn-artistic:hover::before { top: 0; }
+        .btn-artistic:hover { color: #000; border-color: var(--gold-accent); }
+
+        /* =========================================
+           SWIPEABLE VIDEO CAROUSEL
+           ========================================= */
         .video-carousel {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+            cursor: grab;
         }
-        .video-carousel::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .video-carousel::-webkit-scrollbar { display: none; }
+        .video-carousel:active { cursor: grabbing; }
         
         .video-slide {
-            flex: 0 0 100%; /* Full width slides */
+            flex: 0 0 100%;
             scroll-snap-align: center;
             position: relative;
-            height: 70vh; /* Adjust height as needed */
+            height: 75vh;
             min-height: 500px;
             background: #000;
+            overflow: hidden;
         }
 
         .video-slide video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Prevents stretching/misalignment */
-            opacity: 0.6;
-            transition: opacity 0.5s;
+            object-fit: cover;
+            opacity: 0.4;
+            transform: scale(1.05); /* Slight zoom out effect on play */
+            transition: opacity 1s ease, transform 3s ease-out;
         }
         
         .video-slide.is-playing video {
             opacity: 1;
+            transform: scale(1); /* Settles into place */
         }
 
-        /* Custom Scrollbar for normal elements */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-accent); }
     </style>
 </head>
 <body class="antialiased selection:bg-gold selection:text-black">
 
-    <nav class="fixed w-full z-50 top-0 bg-black/90 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="nav-link editorial-text text-xl tracking-wide text-white" data-target="home-page">
+    <nav class="fixed w-full z-50 top-0 bg-black/70 backdrop-blur-lg border-b border-white/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <a href="#" class="nav-link editorial-text text-xl tracking-widest text-white hover:text-gold transition-colors duration-300" data-target="home-page">
                 RAJU NAGANAGOUDA
             </a>
             
-            <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-400">
-                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="home-page">Home</a>
-                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="about-page">About</a>
-                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="showreel-page">Showreel</a>
-                <a href="#" class="nav-link hover:text-gold transition-colors" data-target="contact-page">Contact</a>
+            <div class="hidden md:flex space-x-10 text-xs tracking-[0.2em] uppercase text-gray-400">
+                <a href="#" class="nav-link hover:text-white transition-colors duration-300 relative group" data-target="home-page">
+                    Home <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#" class="nav-link hover:text-white transition-colors duration-300 relative group" data-target="about-page">
+                    About <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#" class="nav-link hover:text-white transition-colors duration-300 relative group" data-target="showreel-page">
+                    Showreel <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#" class="nav-link hover:text-white transition-colors duration-300 relative group" data-target="contact-page">
+                    Contact <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full"></span>
+                </a>
             </div>
             
             <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
-        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-black border-b border-white/10 flex-col items-center py-4 space-y-4 text-sm tracking-widest uppercase text-gray-400 md:hidden">
-            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="home-page">Home</a>
-            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="about-page">About</a>
-            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="showreel-page">Showreel</a>
-            <a href="#" class="nav-link hover:text-gold w-full text-center py-2" data-target="contact-page">Contact</a>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-lg border-b border-white/10 flex-col items-center py-6 space-y-6 text-sm tracking-[0.2em] uppercase text-gray-400 md:hidden">
+            <a href="#" class="nav-link hover:text-gold w-full text-center" data-target="home-page">Home</a>
+            <a href="#" class="nav-link hover:text-gold w-full text-center" data-target="about-page">About</a>
+            <a href="#" class="nav-link hover:text-gold w-full text-center" data-target="showreel-page">Showreel</a>
+            <a href="#" class="nav-link hover:text-gold w-full text-center" data-target="contact-page">Contact</a>
         </div>
     </nav>
 
     <main id="home-page" class="page-view active !pt-0">
         <header class="relative h-screen flex items-center justify-center overflow-hidden">
-            <video autoplay loop muted playsinline class="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover opacity-40">
+            <video autoplay loop muted playsinline class="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover opacity-30">
                 <source src="https://cdn.pixabay.com/video/2023/10/22/186105-877014605_large.mp4" type="video/mp4" />
             </video>
-            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-[#050505] z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-[#030303] z-10"></div>
             
             <div class="relative z-20 text-center px-6 max-w-4xl mx-auto mt-20">
-                <p class="text-gold uppercase tracking-[0.3em] text-xs md:text-sm mb-6">AI-Powered Video Creator</p>
+                <div class="mask-container mb-6">
+                    <p class="mask-reveal text-gold uppercase tracking-[0.3em] text-xs md:text-sm">AI-Powered Video Creator</p>
+                </div>
+                <br>
                 <h1 class="editorial-text text-5xl md:text-7xl lg:text-8xl font-medium leading-tight mb-6">
-                    Cinematic Craft.<br>
-                    <span class="italic text-gray-300">Performance-Driven Results.</span>
+                    <span class="mask-container"><span class="mask-reveal delay-1">Cinematic Craft.</span></span><br>
+                    <span class="mask-container"><span class="mask-reveal delay-2 italic text-gray-300">Performance-Driven Results.</span></span>
                 </h1>
-                <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-                    I create high-impact video content where cinematic storytelling meets AI-powered production.
-                </p>
-                <button class="nav-link inline-block border border-gold text-gold px-8 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300" data-target="showreel-page">
-                    Explore Showreel
-                </button>
+                <div class="mask-container mb-10">
+                    <p class="mask-reveal delay-3 text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                        I create high-impact video content where cinematic storytelling meets AI-powered production.
+                    </p>
+                </div>
+                <br>
+                <div class="mask-container">
+                    <button class="mask-reveal delay-3 nav-link btn-artistic inline-block border border-white/30 text-white px-10 py-4 uppercase tracking-widest text-xs transition-all duration-300" data-target="showreel-page">
+                        Explore Showreel
+                    </button>
+                </div>
             </div>
         </header>
     </main>
 
-    <main id="about-page" class="page-view bg-[#0a0a0a]">
-        <div class="max-w-5xl mx-auto px-6 py-16">
-            <div class="text-center mb-20">
+    <main id="about-page" class="page-view">
+        <div class="max-w-5xl mx-auto px-6 py-24">
+            <div class="text-center mb-20 animate-on-scroll">
                 <p class="text-gold uppercase tracking-widest text-xs mb-4">Latest Insights</p>
                 <h2 class="editorial-text text-4xl md:text-5xl">My Journey</h2>
+                <div class="w-px h-16 bg-gradient-to-b from-gold to-transparent mx-auto mt-8"></div>
             </div>
 
-            <div class="space-y-16">
-                <div class="border-l border-gold/30 pl-8 relative">
-                    <div class="absolute w-3 h-3 bg-gold rounded-full -left-[6.5px] top-2"></div>
-                    <h3 class="editorial-text text-2xl mb-2">Pocket FM</h3>
-                    <p class="text-gold text-sm tracking-wider uppercase mb-4">Lead AI-Powered Visual Production</p>
-                    <p class="text-gray-400 font-light mb-4">Delivering high-frequency cinematic assets through structured generative workflows for serialized storytelling.</p>
-                    <div class="bg-black border border-white/5 p-6 mt-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="text-white text-sm uppercase tracking-wider mb-3 border-b border-white/10 pb-2">Script Intake & Breakdown</h4>
-                                <ul class="text-gray-500 text-sm font-light space-y-2 list-disc pl-4">
-                                    <li>Analyze screenplay beats</li>
-                                    <li>Identify emotional peaks</li>
-                                    <li>Extract visual moments</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="text-white text-sm uppercase tracking-wider mb-3 border-b border-white/10 pb-2">Visual Development</h4>
-                                <ul class="text-gray-500 text-sm font-light space-y-2 list-disc pl-4">
-                                    <li>Build base visual references</li>
-                                    <li>Generate style frames</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+            <div class="space-y-20">
+                <div class="animate-on-scroll border-l border-white/10 pl-8 relative hover:border-gold/50 transition-colors duration-500">
+                    <div class="absolute w-3 h-3 bg-gold rounded-full -left-[6.5px] top-2 shadow-[0_0_10px_rgba(197,168,128,0.5)]"></div>
+                    <h3 class="editorial-text text-3xl mb-2 text-white">Pocket FM</h3>
+                    <p class="text-gold text-xs tracking-[0.2em] uppercase mb-6">Lead AI-Powered Visual Production</p>
+                    <p class="text-gray-400 font-light mb-6 leading-relaxed max-w-2xl">Delivering high-frequency cinematic assets through structured generative workflows for serialized storytelling. Merging screenplay beats with emotional visual peaks.</p>
                 </div>
 
-                <div class="border-l border-gold/30 pl-8 relative">
+                <div class="animate-on-scroll border-l border-white/10 pl-8 relative hover:border-gold/50 transition-colors duration-500">
                     <div class="absolute w-3 h-3 bg-white/20 rounded-full -left-[6.5px] top-2"></div>
-                    <h3 class="editorial-text text-2xl mb-2">Bigg Boss Kannada – Season 11</h3>
-                    <p class="text-gray-500 text-sm tracking-wider uppercase mb-4">Show Writer (Endemol Shine India)</p>
-                    <p class="text-gray-400 font-light">Contributed to narrative structuring and episodic scripting for one of Karnataka's highest-rated prime-time reality shows.</p>
+                    <h3 class="editorial-text text-3xl mb-2 text-white">Bigg Boss Kannada – Season 11</h3>
+                    <p class="text-gray-500 text-xs tracking-[0.2em] uppercase mb-6">Show Writer (Endemol Shine India)</p>
+                    <p class="text-gray-400 font-light leading-relaxed max-w-2xl">Contributed to narrative structuring and episodic scripting for one of Karnataka's highest-rated prime-time reality shows. Thriving in high-intensity broadcast cycles.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <main id="showreel-page" class="page-view bg-[#050505]">
-        <div class="max-w-7xl mx-auto px-6 py-12">
-            <div class="text-center mb-8">
-                <h2 class="editorial-text text-4xl md:text-5xl mb-2">My Work</h2>
-                <p class="text-gray-500 font-light">Swipe or scroll horizontally to explore. Videos play automatically.</p>
+    <main id="showreel-page" class="page-view bg-[#000]">
+        <div class="max-w-full mx-auto py-12">
+            <div class="text-center mb-8 px-6 animate-on-scroll">
+                <h2 class="editorial-text text-4xl md:text-5xl mb-3">The Showreel</h2>
+                <p class="text-gray-500 font-light text-sm uppercase tracking-widest flex items-center justify-center gap-4">
+                    <span class="w-8 h-px bg-white/20"></span> Swipe to explore <span class="w-8 h-px bg-white/20"></span>
+                </p>
             </div>
             
-            <div class="relative border border-white/10">
+            <div class="relative w-full">
                 <div class="video-carousel" id="carousel">
                     
                     <div class="video-slide flex justify-center items-center">
-                        <video src="https://cdn.pixabay.com/video/2020/05/24/40092-425253816_large.mp4" loop playsinline muted></video>
-                        <div class="absolute bottom-10 left-10 z-20 pointer-events-none">
-                            <h3 class="editorial-text text-3xl text-white mb-2 shadow-black drop-shadow-md">Creative-Ad</h3>
-                            <span class="text-xs uppercase tracking-widest text-gold bg-black/50 px-3 py-1 backdrop-blur-sm border border-gold/30">AI Generated</span>
+                        <video src="https://cdn.pixabay.com/video/2020/05/24/40092-425253816_large.mp4" autoplay muted playsinline loop></video>
+                        <div class="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-black via-black/50 to-transparent z-20 pointer-events-none">
+                            <h3 class="editorial-text text-4xl text-white mb-3">Creative-Ad</h3>
+                            <span class="text-xs uppercase tracking-widest text-gold border border-gold/30 px-4 py-2 backdrop-blur-md">AI Generated</span>
                         </div>
                     </div>
 
                     <div class="video-slide flex justify-center items-center">
-                        <video src="https://cdn.pixabay.com/video/2024/02/25/104692-668028122_large.mp4" loop playsinline muted></video>
-                        <div class="absolute bottom-10 left-10 z-20 pointer-events-none">
-                            <h3 class="editorial-text text-3xl text-white mb-2 shadow-black drop-shadow-md">Itchy Boots</h3>
-                            <span class="text-xs uppercase tracking-widest text-gold bg-black/50 px-3 py-1 backdrop-blur-sm border border-gold/30">Cinematic Edit</span>
+                        <video src="https://cdn.pixabay.com/video/2024/02/25/104692-668028122_large.mp4" autoplay muted playsinline loop></video>
+                        <div class="absolute bottom-0 left-0 w-full p-10 bg-gradient-to-t from-black via-black/50 to-transparent z-20 pointer-events-none">
+                            <h3 class="editorial-text text-4xl text-white mb-3">Itchy Boots</h3>
+                            <span class="text-xs uppercase tracking-widest text-gold border border-gold/30 px-4 py-2 backdrop-blur-md">Cinematic Edit</span>
                         </div>
                     </div>
 
                 </div>
                 
-                <div class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white/30 pointer-events-none">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <div class="absolute top-1/2 left-6 transform -translate-y-1/2 text-white/50 pointer-events-none animate-pulse">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7"></path></svg>
                 </div>
-                <div class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white/30 pointer-events-none">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <div class="absolute top-1/2 right-6 transform -translate-y-1/2 text-white/50 pointer-events-none animate-pulse">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7"></path></svg>
                 </div>
             </div>
         </div>
     </main>
 
-    <main id="contact-page" class="page-view bg-[#030303]">
-        <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div>
-                <h2 class="editorial-text text-4xl md:text-5xl mb-6">Let's Connect</h2>
-                <p class="text-gray-400 font-light mb-8 max-w-md">
-                    Specializing in utilizing AI to create captivating narratives and films. Pushing the boundaries of storytelling by merging artistic vision with cutting-edge technology.
-                </p>
-                <div class="space-y-4 text-sm font-light text-gray-300">
-                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Phone</span> 9380083357</p>
-                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Email</span> dropin.raju@gmail.com</p>
-                    <p class="flex items-center gap-4"><span class="text-gold tracking-widest uppercase text-xs">Location</span> Bangalore, IND</p>
+    <main id="contact-page" class="page-view">
+        <div class="max-w-7xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div class="animate-on-scroll">
+                <p class="text-gold uppercase tracking-widest text-xs mb-4">Inquiries</p>
+                <h2 class="editorial-text text-4xl md:text-6xl mb-8">Let's Create<br><span class="italic text-gray-500">Together.</span></h2>
+                <div class="space-y-6 text-sm font-light text-gray-400">
+                    <p class="flex items-center gap-6 border-b border-white/5 pb-4"><span class="text-white tracking-widest uppercase text-xs w-20">Phone</span> +91 9380083357</p>
+                    <p class="flex items-center gap-6 border-b border-white/5 pb-4"><span class="text-white tracking-widest uppercase text-xs w-20">Email</span> dropin.raju@gmail.com</p>
+                    <p class="flex items-center gap-6 border-b border-white/5 pb-4"><span class="text-white tracking-widest uppercase text-xs w-20">Base</span> Bangalore, IND</p>
                 </div>
             </div>
 
-            <div>
-                <form class="space-y-6" onsubmit="event.preventDefault();">
-                    <div>
-                        <input type="email" placeholder="Email Address *" required class="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white focus:outline-none focus:border-gold transition-colors font-light placeholder-gray-600">
+            <div class="animate-on-scroll flex items-center">
+                <form class="w-full space-y-8" onsubmit="event.preventDefault();">
+                    <div class="relative">
+                        <input type="email" id="email" placeholder=" " required class="block w-full px-0 py-4 text-white bg-transparent border-0 border-b border-white/20 appearance-none focus:outline-none focus:ring-0 focus:border-gold peer transition-colors">
+                        <label for="email" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gold peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 tracking-widest uppercase">Email Address</label>
                     </div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="subscribe" class="mt-1 accent-gold bg-transparent border-white/20">
-                        <label for="subscribe" class="text-xs text-gray-500 font-light">Yes, subscribe me to your newsletter. *</label>
+                    <div class="flex items-center gap-4">
+                        <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                                <input type="checkbox" id="subscribe" class="w-4 h-4 bg-transparent border border-white/20 rounded focus:ring-0 checked:bg-gold checked:border-gold appearance-none transition-colors cursor-pointer">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="subscribe" class="font-light text-gray-500 cursor-pointer">Subscribe to newsletter</label>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="w-full md:w-auto bg-transparent border border-gold text-gold px-10 py-3 uppercase tracking-widest text-sm hover:bg-gold hover:text-black transition-all duration-300">
-                        Submit
+                    <button type="submit" class="btn-artistic w-full border border-white/20 text-white px-10 py-5 uppercase tracking-widest text-xs transition-all duration-300 mt-4">
+                        Send Message
                     </button>
                 </form>
             </div>
         </div>
     </main>
 
-    <footer class="bg-black border-t border-white/5 py-8">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-xs text-gray-600 tracking-wider">© 2026 AI Filmmaker. All Rights Reserved.</p>
-            <div class="flex gap-6 text-xs text-gray-500 uppercase tracking-widest">
-                <a href="#" class="hover:text-gold transition-colors">Instagram</a>
-                <a href="#" class="hover:text-gold transition-colors">X</a>
-                <a href="#" class="hover:text-gold transition-colors">LinkedIn</a>
+    <footer class="bg-black border-t border-white/5 py-10 relative z-50">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-xs text-gray-600 tracking-widest uppercase">© 2026 AI Filmmaker.</p>
+            <div class="flex gap-8 text-xs text-gray-400 uppercase tracking-widest">
+                <a href="#" class="hover:text-gold transition-colors duration-300">Instagram</a>
+                <a href="#" class="hover:text-gold transition-colors duration-300">X</a>
+                <a href="#" class="hover:text-gold transition-colors duration-300">LinkedIn</a>
             </div>
         </div>
     </footer>
@@ -269,26 +321,27 @@
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     
-                    // Hide mobile menu if open
                     mobileMenu.classList.add('hidden');
                     
-                    // Get target page ID
                     const targetId = link.getAttribute('data-target');
                     if(!targetId) return;
 
-                    // Remove active state from all pages
-                    pages.forEach(p => p.classList.remove('active'));
+                    pages.forEach(p => {
+                        p.classList.remove('active');
+                        // Reset scroll animations when leaving a page
+                        p.querySelectorAll('.is-visible').forEach(el => el.classList.remove('is-visible'));
+                    });
                     
-                    // Activate target page
                     const targetPage = document.getElementById(targetId);
                     targetPage.classList.add('active');
                     
-                    // Scroll to top automatically
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Re-trigger scroll animations for the new page
+                    setTimeout(() => checkScrollAnimations(), 100);
                 });
             });
 
-            // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
                 mobileMenu.classList.toggle('flex');
@@ -298,40 +351,60 @@
             // --- 2. SMART VIDEO SLIDER (Auto Play/Pause) ---
             const videoSlides = document.querySelectorAll('.video-slide');
             
-            // Set up an Intersection Observer to watch which slide is visible
-            const observerOptions = {
-                root: document.getElementById('carousel'), // Watch within the carousel container
-                rootMargin: '0px',
-                threshold: 0.6 // Trigger when 60% of the video is visible
-            };
-
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const video = entry.target.querySelector('video');
                     
                     if (entry.isIntersecting) {
-                        // Slide is visible: Play video, add full opacity
                         entry.target.classList.add('is-playing');
-                        // Use a promise catch to handle browser autoplay restrictions gracefully
+                        // Play the video. If it fails (due to strict browser rules), catch the error silently.
                         let playPromise = video.play();
                         if (playPromise !== undefined) {
                             playPromise.catch(error => {
-                                console.log("Autoplay prevented. User interaction required.");
+                                console.log("Autoplay prevented by browser policy. Video requires interaction.");
                             });
                         }
                     } else {
-                        // Slide is hidden: Pause video, dim opacity
                         entry.target.classList.remove('is-playing');
                         video.pause();
-                        video.currentTime = 0; // Optional: rewind to start when sliding away
                     }
                 });
-            }, observerOptions);
-
-            // Observe all video slides
-            videoSlides.forEach(slide => {
-                videoObserver.observe(slide);
+            }, {
+                root: document.getElementById('carousel'),
+                threshold: 0.5 
             });
+
+            videoSlides.forEach(slide => videoObserver.observe(slide));
+
+
+            // --- 3. SCROLL ANIMATIONS (For text and elements) ---
+            const scrollElements = document.querySelectorAll('.animate-on-scroll');
+            
+            const checkScrollAnimations = () => {
+                const triggerBottom = window.innerHeight * 0.85;
+                
+                scrollElements.forEach(el => {
+                    const elTop = el.getBoundingClientRect().top;
+                    if(elTop < triggerBottom) {
+                        // Apply the mask-reveal classes dynamically
+                        el.classList.add('is-visible');
+                        el.querySelectorAll('.mask-reveal').forEach(child => child.classList.add('is-visible'));
+                    }
+                });
+            };
+
+            // Wrap contents of scroll elements in mask containers for the effect
+            scrollElements.forEach(el => {
+                if(!el.querySelector('.mask-container')) {
+                    el.classList.add('mask-container');
+                    const innerHTML = el.innerHTML;
+                    el.innerHTML = `<div class="mask-reveal">${innerHTML}</div>`;
+                }
+            });
+
+            window.addEventListener('scroll', checkScrollAnimations);
+            // Trigger once on load
+            checkScrollAnimations();
         });
     </script>
 </body>
