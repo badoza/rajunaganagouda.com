@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raju Naganagouda | AI-Powered Video Creator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
         
@@ -122,13 +123,25 @@
         }
 
         /* =========================================
-           6. VIDEO CAROUSEL
+           6. YOUTUBE VIDEO CAROUSEL
            ========================================= */
         .video-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
         .video-carousel::-webkit-scrollbar { display: none; }
         .video-slide { flex: 0 0 100%; scroll-snap-align: center; position: relative; height: 75vh; min-height: 500px; background: #000; overflow: hidden; }
-        .video-slide video { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transform: scale(1.08); transition: opacity 1s ease, transform 3s ease-out; }
-        .video-slide.is-playing video { opacity: 1; transform: scale(1); }
+        
+        /* The iframe wrapper prevents YouTube from hijacking the touch swipe gesture */
+        .yt-iframe-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* Allows swiping */
+            opacity: 0.4; transform: scale(1.08);
+            transition: opacity 1s ease, transform 3s ease-out;
+        }
+        .yt-iframe-wrapper iframe {
+            width: 100vw; height: 56.25vw; /* 16:9 Aspect Ratio */
+            min-height: 100vh; min-width: 177.77vh; /* Cover parent completely */
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        }
+        .video-slide.is-playing .yt-iframe-wrapper { opacity: 1; transform: scale(1); }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 3px; }
@@ -151,10 +164,13 @@
     <div class="cursor-ring" id="cursor-ring"></div>
 
     <nav class="fixed w-full z-50 top-0 bg-transparent transition-all duration-500 hoverable" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-            <a href="#" class="nav-link editorial-text text-lg md:text-xl tracking-widest text-white hover:text-gold transition-colors duration-300" data-target="home-page">
-                RAJU NAGANAGOUDA
-            </a>
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="flex flex-col">
+                <a href="#" class="nav-link editorial-text text-lg md:text-xl tracking-widest text-white hover:text-gold transition-colors duration-300" data-target="home-page">
+                    RAJU NAGANAGOUDA
+                </a>
+                <span class="text-[8px] tracking-widest uppercase text-gray-500 mt-1">Developed by Kunal Dongare</span>
+            </div>
             
             <div class="hidden md:flex space-x-10 text-xs tracking-[0.2em] uppercase text-gray-400">
                 <a href="#" class="nav-link hoverable hover:text-white transition-colors duration-300 relative group" data-target="home-page">
@@ -190,43 +206,43 @@
                     <source src="https://cdn.pixabay.com/video/2023/10/22/186105-877014605_large.mp4" type="video/mp4" />
                 </video>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-[#030303] z-10 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#030303] z-10 pointer-events-none"></div>
             
-            <div class="relative z-20 text-center px-4 md:px-6 w-full max-w-5xl mx-auto mt-10 md:mt-20">
+            <div class="relative z-20 text-center px-4 md:px-6 w-full max-w-6xl mx-auto mt-10 md:mt-24 flex flex-col items-center">
                 
                 <div class="mask-container mb-4 md:mb-6">
                     <p class="mask-reveal text-gold uppercase tracking-[0.3em] text-xs md:text-sm font-medium">AI-Powered Video Creator</p>
                 </div>
                 
-                <h1 class="editorial-text text-4xl md:text-6xl lg:text-8xl font-medium leading-tight mb-4 md:mb-6">
+                <h1 class="editorial-text text-5xl md:text-7xl lg:text-8xl font-medium leading-tight mb-4 md:mb-6">
                     <span class="mask-container"><span class="mask-reveal delay-1">Cinematic Craft.</span></span><br>
                     <span class="mask-container"><span class="mask-reveal delay-2 italic text-gray-300">Performance-Driven.</span></span>
                 </h1>
 
                 <div class="mask-container mb-12">
-                    <div class="mask-reveal delay-3 flex flex-wrap justify-center items-center gap-x-3 gap-y-2 text-[10px] sm:text-xs md:text-sm tracking-[0.1em] md:tracking-[0.2em] uppercase text-gray-300 font-light px-4">
+                    <div class="mask-reveal delay-3 flex flex-wrap justify-center items-center gap-x-3 gap-y-3 text-[10px] sm:text-xs md:text-sm tracking-[0.15em] md:tracking-[0.2em] uppercase text-gray-300 font-light px-4">
                         <span class="text-white">AI Filmmaking</span>
                         <span class="text-gold opacity-50">•</span>
                         <span class="text-white">Visual Storytelling</span>
-                        <span class="text-gold opacity-50 hidden sm:inline">•</span>
+                        <span class="text-gold opacity-50 hidden md:inline">•</span>
                         <span class="text-white">Screenwriting</span>
                         <span class="text-gold opacity-50">•</span>
                         <span class="text-white">Script Supervision</span>
                     </div>
                 </div>
                 
-                <div class="mask-container mt-6 md:mt-10">
-                    <div class="mask-reveal delay-4 relative inline-flex flex-col md:flex-row items-center justify-center">
+                <div class="mask-container mt-4">
+                    <div class="mask-reveal delay-4 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
                         
-                        <button class="nav-link magnetic-btn hoverable border border-white/30 text-white px-8 md:px-12 py-4 md:py-5 uppercase tracking-widest text-xs md:text-sm z-10" data-target="showreel-page">
+                        <button class="nav-link magnetic-btn hoverable border border-white/30 text-white px-10 py-5 uppercase tracking-widest text-xs md:text-sm z-10" data-target="showreel-page">
                             Explore Showreel
                         </button>
 
-                        <div class="price-badge hoverable relative md:absolute md:-right-24 md:-top-10 mt-6 md:mt-0 px-6 py-3 rounded-full z-20 rotate-0 md:rotate-6 cursor-none shadow-2xl">
-                            <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-gold animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                                <span class="text-white font-medium tracking-wide text-xs sm:text-sm whitespace-nowrap">
-                                    Video Starts From <span class="editorial-text text-gold text-lg md:text-xl ml-1">$9</span>
+                        <div class="price-badge hoverable relative px-8 py-4 rounded-full z-20 cursor-none shadow-2xl">
+                            <span class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-gold animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                                <span class="text-white font-medium tracking-widest text-xs sm:text-sm uppercase">
+                                    Video Starts From <span class="editorial-text text-gold text-xl md:text-2xl ml-2">$9</span>
                                 </span>
                             </span>
                         </div>
@@ -275,20 +291,47 @@
             
             <div class="relative w-full hoverable">
                 <div class="video-carousel" id="carousel">
-                    <div class="video-slide flex justify-center items-center">
-                        <video src="https://cdn.pixabay.com/video/2020/05/24/40092-425253816_large.mp4" autoplay muted playsinline loop></video>
-                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black via-black/50 to-transparent z-20 pointer-events-none">
-                            <h3 class="editorial-text text-3xl md:text-4xl text-white mb-3">Creative-Ad</h3>
+                    
+                    <div class="video-slide flex justify-center items-center" data-yt-id="XLj2L7Ide-o">
+                        <div class="yt-iframe-wrapper">
+                            <div class="yt-player"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black via-black/60 to-transparent z-20 pointer-events-none">
+                            <h3 class="editorial-text text-3xl md:text-4xl text-white mb-3 shadow-black">Cinematic Storytelling</h3>
                             <span class="text-[10px] md:text-xs uppercase tracking-widest text-gold border border-gold/30 px-3 md:px-4 py-2 backdrop-blur-md">AI Generated</span>
                         </div>
                     </div>
-                    <div class="video-slide flex justify-center items-center">
-                        <video src="https://cdn.pixabay.com/video/2024/02/25/104692-668028122_large.mp4" autoplay muted playsinline loop></video>
-                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black via-black/50 to-transparent z-20 pointer-events-none">
-                            <h3 class="editorial-text text-3xl md:text-4xl text-white mb-3">Itchy Boots</h3>
-                            <span class="text-[10px] md:text-xs uppercase tracking-widest text-gold border border-gold/30 px-3 md:px-4 py-2 backdrop-blur-md">Cinematic Edit</span>
+
+                    <div class="video-slide flex justify-center items-center" data-yt-id="YTZXqw2ON-E">
+                        <div class="yt-iframe-wrapper">
+                            <div class="yt-player"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black via-black/60 to-transparent z-20 pointer-events-none">
+                            <h3 class="editorial-text text-3xl md:text-4xl text-white mb-3 shadow-black">Ad Campaign</h3>
+                            <span class="text-[10px] md:text-xs uppercase tracking-widest text-gold border border-gold/30 px-3 md:px-4 py-2 backdrop-blur-md">Commercial</span>
                         </div>
                     </div>
+
+                    <div class="video-slide flex justify-center items-center" data-yt-id="b4weHgNwWtU">
+                        <div class="yt-iframe-wrapper">
+                            <div class="yt-player"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black via-black/60 to-transparent z-20 pointer-events-none">
+                            <h3 class="editorial-text text-3xl md:text-4xl text-white mb-3 shadow-black">Brand Vision</h3>
+                            <span class="text-[10px] md:text-xs uppercase tracking-widest text-gold border border-gold/30 px-3 md:px-4 py-2 backdrop-blur-md">Direction</span>
+                        </div>
+                    </div>
+
+                    <div class="video-slide flex justify-center items-center" data-yt-id="NqDQ6lM1FUc">
+                        <div class="yt-iframe-wrapper">
+                            <div class="yt-player"></div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black via-black/60 to-transparent z-20 pointer-events-none">
+                            <h3 class="editorial-text text-3xl md:text-4xl text-white mb-3 shadow-black">Visual Symphony</h3>
+                            <span class="text-[10px] md:text-xs uppercase tracking-widest text-gold border border-gold/30 px-3 md:px-4 py-2 backdrop-blur-md">Post Production</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -322,7 +365,7 @@
 
     <footer class="bg-black border-t border-white/5 py-10 relative z-50">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p class="text-[10px] md:text-xs text-gray-600 tracking-widest uppercase">© 2026 AI Filmmaker.</p>
+            <p class="text-[10px] md:text-xs text-gray-600 tracking-widest uppercase">© 2026 AI Filmmaker. All Rights Reserved.</p>
             <div class="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
                 <a href="#" class="hoverable hover:text-gold transition-colors duration-300">Instagram</a>
                 <a href="#" class="hoverable hover:text-gold transition-colors duration-300">X</a>
@@ -332,6 +375,40 @@
     </footer>
 
     <script>
+        // --- YOUTUBE IFRAME API SETUP ---
+        let ytPlayers = [];
+        let playersReady = false;
+
+        function onYouTubeIframeAPIReady() {
+            document.querySelectorAll('.video-slide').forEach((slide, index) => {
+                const videoId = slide.getAttribute('data-yt-id');
+                const playerDiv = slide.querySelector('.yt-player');
+                
+                // Give div a unique ID for the API
+                playerDiv.id = 'yt-player-' + index;
+
+                const player = new YT.Player(playerDiv.id, {
+                    videoId: videoId,
+                    playerVars: {
+                        'autoplay': 0, 'controls': 0, 'mute': 1, 
+                        'loop': 1, 'playlist': videoId, 
+                        'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'fs': 0
+                    },
+                    events: {
+                        'onReady': () => {
+                            slide.ytPlayer = player;
+                            // Play if it's currently marked as playing by the observer
+                            if (slide.classList.contains('is-playing')) {
+                                player.playVideo();
+                            }
+                        }
+                    }
+                });
+                ytPlayers.push(player);
+            });
+            playersReady = true;
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             
             // 1. PRELOADER REMOVAL
@@ -368,13 +445,12 @@
                     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
                 });
             } else {
-                // Hide custom cursor elements on mobile
                 document.getElementById('cursor-dot').style.display = 'none';
                 document.getElementById('cursor-ring').style.display = 'none';
-                document.body.style.cursor = 'auto'; // Restore default cursor
+                document.body.style.cursor = 'auto'; 
             }
 
-            // 3. MAGNETIC BUTTONS LOGIC (Desktop only)
+            // 3. MAGNETIC BUTTONS LOGIC
             if (!isMobile) {
                 document.querySelectorAll('.magnetic-btn').forEach(btn => {
                     btn.addEventListener('mousemove', (e) => {
@@ -428,8 +504,24 @@
                         p.querySelectorAll('.is-visible').forEach(el => el.classList.remove('is-visible'));
                     });
                     
-                    document.getElementById(targetId).classList.add('active');
+                    const targetPage = document.getElementById(targetId);
+                    targetPage.classList.add('active');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Specific trigger for YouTube slider
+                    if(targetId === 'showreel-page') {
+                        // Small delay to allow fade-in before calculating intersections
+                        setTimeout(() => triggerVideoObserver(), 300);
+                    } else {
+                        // Pause all videos if leaving showreel
+                        document.querySelectorAll('.video-slide').forEach(slide => {
+                            slide.classList.remove('is-playing');
+                            if(slide.ytPlayer && typeof slide.ytPlayer.pauseVideo === 'function') {
+                                slide.ytPlayer.pauseVideo();
+                            }
+                        });
+                    }
+
                     setTimeout(() => checkScrollAnimations(), 100);
                 });
             });
@@ -439,21 +531,30 @@
                 mobileMenu.classList.toggle('flex');
             });
 
-            // 6. VIDEO SLIDER AUTOPLAY OBSERVER
-            const videoObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-playing');
-                        let playPromise = video.play();
-                        if (playPromise !== undefined) playPromise.catch(() => {});
-                    } else {
-                        entry.target.classList.remove('is-playing');
-                        video.pause();
-                    }
-                });
-            }, { root: document.getElementById('carousel'), threshold: 0.5 });
-            document.querySelectorAll('.video-slide').forEach(s => videoObserver.observe(s));
+            // 6. YOUTUBE VIDEO SLIDER OBSERVER
+            let videoObserver;
+            function triggerVideoObserver() {
+                if(!videoObserver) {
+                    videoObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            const slide = entry.target;
+                            if (entry.isIntersecting) {
+                                slide.classList.add('is-playing');
+                                if (slide.ytPlayer && typeof slide.ytPlayer.playVideo === 'function') {
+                                    slide.ytPlayer.playVideo();
+                                }
+                            } else {
+                                slide.classList.remove('is-playing');
+                                if (slide.ytPlayer && typeof slide.ytPlayer.pauseVideo === 'function') {
+                                    slide.ytPlayer.pauseVideo();
+                                }
+                            }
+                        });
+                    }, { root: document.getElementById('carousel'), threshold: 0.6 });
+                    
+                    document.querySelectorAll('.video-slide').forEach(s => videoObserver.observe(s));
+                }
+            }
 
             // 7. SCROLL REVEAL ANIMATIONS
             const scrollElements = document.querySelectorAll('.animate-on-scroll');
