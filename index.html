@@ -67,9 +67,9 @@
         .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
 
         /* =========================================
-           TIMELINE CSS (Matches the Screenshot)
+           TIMELINE CSS
            ========================================= */
-        .timeline-container { position: relative; max-w-5xl; margin: 0 auto; padding: 2rem 0; }
+        .timeline-container { position: relative; max-width: 64rem; margin: 0 auto; padding: 2rem 0; }
         .timeline-container::before {
             content: ''; position: absolute; top: 0; bottom: 0; left: 24px;
             width: 2px; background: #333; z-index: 1;
@@ -110,6 +110,14 @@
         /* =========================================
            BUTTONS & SHOWREEL
            ========================================= */
+        .animate-breathe { animation: slowBreathe 6s ease-in-out infinite; }
+        @keyframes slowBreathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+        .service-item { display: inline-block; position: relative; transition: all 0.5s var(--easing); }
+        .service-item::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 1px; background: var(--gold-accent); transition: all 0.5s var(--easing); transform: translateX(-50%); }
+        .service-item:hover { color: var(--gold-accent); transform: scale(1.05); text-shadow: 0 0 20px rgba(197, 168, 128, 0.4); }
+        .service-item:hover::after { width: 100%; }
+
         .magnetic-btn { display: inline-block; position: relative; z-index: 1; overflow: hidden; transition: color 0.4s var(--easing), transform 0.3s ease-out; cursor: pointer; }
         .magnetic-btn::before { content: ''; position: absolute; top: 100%; left: 0; right: 0; bottom: 0; background: var(--gold-accent); z-index: -1; transition: top 0.4s var(--easing); }
         .magnetic-btn:hover::before { top: 0; }
@@ -118,14 +126,16 @@
         .premium-badge { position: relative; overflow: hidden; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(197, 168, 128, 0.3); box-shadow: 0 0 20px rgba(197, 168, 128, 0.05); transition: all 0.4s ease; }
         .premium-badge:hover { border-color: rgba(197, 168, 128, 0.8); box-shadow: 0 0 30px rgba(197, 168, 128, 0.15); transform: translateY(-2px); }
 
+        /* Video Carousel styling */
         .video-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; height: 85vh; min-height: 600px;}
         .video-carousel::-webkit-scrollbar { display: none; }
         .video-slide { flex: 0 0 100%; scroll-snap-align: center; position: relative; height: 100%; background: #000; overflow: hidden; }
         
-        .yt-iframe-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; opacity: 0.4; transform: scale(1.05); transition: opacity 1s ease, transform 3s ease-out; }
-        .yt-iframe-wrapper iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        /* Iframe wrapper set to pointer-events: none to block user clicks (pausing, forwarding) */
+        .yt-iframe-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.4; transform: scale(1.05); transition: opacity 1s ease, transform 3s ease-out; }
+        .yt-iframe-wrapper iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         .video-slide.is-playing .yt-iframe-wrapper { opacity: 1; transform: scale(1); }
-        .slide-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
+        .slide-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); pointer-events: none; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 3px; }
@@ -143,7 +153,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             
             <a href="#" class="nav-link flex items-center z-50 relative group" data-target="home-page">
-                <img src="RAJU_NAGAN_logo_202604141209%20(1).jpg" alt="Raju Nagan Logo" 
+                <img src="raju-nagan-logo.jpg" alt="Raju Nagan Logo" 
                      class="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105" 
                      onerror="this.onerror=null; this.src='logo.jpg'; this.onerror=function(){this.style.display='none'; this.nextElementSibling.style.display='block';};">
                 <span class="editorial-text text-xl md:text-2xl tracking-[0.2em] text-white hidden group-hover:text-gold transition-colors duration-300">RAJU NAGAN</span>
@@ -194,13 +204,13 @@
 
                 <div class="mask-container w-full max-w-4xl mx-auto mb-12">
                     <div class="mask-reveal delay-3 animate-breathe flex flex-wrap justify-center items-center gap-4 md:gap-8 px-4">
-                        <span class="text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light">AI Filmmaking</span>
+                        <span class="service-item text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light">AI Filmmaking</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden sm:block"></span>
-                        <span class="text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light">Visual Storytelling</span>
+                        <span class="service-item text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light">Visual Storytelling</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden md:block"></span>
-                        <span class="text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light mt-2 md:mt-0">Screenwriting</span>
+                        <span class="service-item text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light mt-2 md:mt-0">Screenwriting</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-gold/30 hidden sm:block mt-2 md:mt-0"></span>
-                        <span class="text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light mt-2 md:mt-0">AI Ad-Films</span>
+                        <span class="service-item text-white text-[10px] md:text-xs tracking-[0.2em] uppercase font-light mt-2 md:mt-0">AI Ad-Films</span>
                     </div>
                 </div>
                 
@@ -225,14 +235,38 @@
     <main id="about-page" class="page-view relative z-10 bg-[#030303]">
         <div class="max-w-6xl mx-auto px-6 py-20 md:py-32">
             
-            <div class="text-center mb-20 animate-on-scroll">
-                <p class="text-gold uppercase tracking-widest text-xs mb-4">Experience</p>
+            <div class="mb-32">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="editorial-text text-4xl md:text-6xl">Services Provided</h2>
+                    <div class="w-px h-16 bg-gradient-to-b from-gold to-transparent mx-auto mt-8"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                    <div class="animate-on-scroll p-10 border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-gold/30 transition-all duration-500 group rounded-sm">
+                        <h3 class="editorial-text text-2xl md:text-3xl text-white mb-4 group-hover:text-gold transition-colors">AI Filmmaking</h3>
+                        <p class="text-gray-400 font-light text-sm md:text-base leading-relaxed">Pushing the boundaries of visual creation by merging state-of-the-art generative tools with traditional cinematic directing to build entirely new worlds.</p>
+                    </div>
+                    <div class="animate-on-scroll p-10 border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-gold/30 transition-all duration-500 group rounded-sm">
+                        <h3 class="editorial-text text-2xl md:text-3xl text-white mb-4 group-hover:text-gold transition-colors">Visual Storytelling</h3>
+                        <p class="text-gray-400 font-light text-sm md:text-base leading-relaxed">Designing structured, high-retention visual narratives that hook modern audiences and deliver a brand’s message with unparalleled emotional impact.</p>
+                    </div>
+                    <div class="animate-on-scroll p-10 border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-gold/30 transition-all duration-500 group rounded-sm">
+                        <h3 class="editorial-text text-2xl md:text-3xl text-white mb-4 group-hover:text-gold transition-colors">Screenwriting</h3>
+                        <p class="text-gray-400 font-light text-sm md:text-base leading-relaxed">Crafting meticulous, beat-by-beat scripts specifically optimized for episodic storytelling, reality broadcast cycles, and short-form digital consumption.</p>
+                    </div>
+                    <div class="animate-on-scroll p-10 border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-gold/30 transition-all duration-500 group rounded-sm">
+                        <h3 class="editorial-text text-2xl md:text-3xl text-white mb-4 group-hover:text-gold transition-colors">AI Ad-Films</h3>
+                        <p class="text-gray-400 font-light text-sm md:text-base leading-relaxed">Conceptualizing and generating high-converting, visually stunning commercial advertisements using advanced AI pipelines to scale brand aesthetics effortlessly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-16 animate-on-scroll">
                 <h2 class="editorial-text text-4xl md:text-6xl">My Journey</h2>
                 <div class="w-px h-16 bg-gradient-to-b from-gold to-transparent mx-auto mt-8"></div>
             </div>
 
             <div class="timeline-container">
-                
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -246,7 +280,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -260,7 +293,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -274,7 +306,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -288,7 +319,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -302,7 +332,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -316,7 +345,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -330,7 +358,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="timeline-item animate-on-scroll">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -344,7 +371,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
@@ -365,14 +391,6 @@
                     <div class="video-slide flex justify-center items-center" data-yt-id="XLj2L7Ide-o">
                         <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
                         <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
-                        
-                        <div class="absolute inset-0 flex items-center justify-center z-20 cursor-pointer unmute-btn bg-black/20 hover:bg-black/10 transition-colors" onclick="unmuteVideo(this)">
-                            <div class="bg-black/60 backdrop-blur-md border border-white/20 px-6 py-3 rounded-full flex items-center gap-3 hover:scale-105 transition-transform">
-                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.586l3.707 3.707A.996.996 0 0015 19V5a.996.996 0 00-1.707-.707L9.586 8H7a2 2 0 00-2 2z"></path></svg>
-                                <span class="text-white text-xs uppercase tracking-widest">Tap for Sound</span>
-                            </div>
-                        </div>
-
                         <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                             <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">01 / 04</span>
                             <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Cinematic<br>Storytelling</h3>
@@ -383,9 +401,6 @@
                     <div class="video-slide flex justify-center items-center" data-yt-id="YTZXqw2ON-E">
                         <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
                         <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
-                        <div class="absolute inset-0 flex items-center justify-center z-20 cursor-pointer unmute-btn bg-black/20 hover:bg-black/10 transition-colors" onclick="unmuteVideo(this)">
-                            <div class="bg-black/60 backdrop-blur-md border border-white/20 px-6 py-3 rounded-full flex items-center gap-3 hover:scale-105 transition-transform"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.586l3.707 3.707A.996.996 0 0015 19V5a.996.996 0 00-1.707-.707L9.586 8H7a2 2 0 00-2 2z"></path></svg><span class="text-white text-xs uppercase tracking-widest">Tap for Sound</span></div>
-                        </div>
                         <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                             <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">02 / 04</span>
                             <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Ad<br>Campaign</h3>
@@ -396,9 +411,6 @@
                     <div class="video-slide flex justify-center items-center" data-yt-id="b4weHgNwWtU">
                         <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
                         <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
-                        <div class="absolute inset-0 flex items-center justify-center z-20 cursor-pointer unmute-btn bg-black/20 hover:bg-black/10 transition-colors" onclick="unmuteVideo(this)">
-                            <div class="bg-black/60 backdrop-blur-md border border-white/20 px-6 py-3 rounded-full flex items-center gap-3 hover:scale-105 transition-transform"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.586l3.707 3.707A.996.996 0 0015 19V5a.996.996 0 00-1.707-.707L9.586 8H7a2 2 0 00-2 2z"></path></svg><span class="text-white text-xs uppercase tracking-widest">Tap for Sound</span></div>
-                        </div>
                         <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                             <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">03 / 04</span>
                             <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Brand<br>Vision</h3>
@@ -409,9 +421,6 @@
                     <div class="video-slide flex justify-center items-center" data-yt-id="NqDQ6lM1FUc">
                         <div class="yt-iframe-wrapper"><div class="yt-player"></div></div>
                         <div class="absolute inset-0 slide-overlay z-10 pointer-events-none"></div>
-                        <div class="absolute inset-0 flex items-center justify-center z-20 cursor-pointer unmute-btn bg-black/20 hover:bg-black/10 transition-colors" onclick="unmuteVideo(this)">
-                            <div class="bg-black/60 backdrop-blur-md border border-white/20 px-6 py-3 rounded-full flex items-center gap-3 hover:scale-105 transition-transform"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 10v4a2 2 0 002 2h2.586l3.707 3.707A.996.996 0 0015 19V5a.996.996 0 00-1.707-.707L9.586 8H7a2 2 0 00-2 2z"></path></svg><span class="text-white text-xs uppercase tracking-widest">Tap for Sound</span></div>
-                        </div>
                         <div class="absolute bottom-12 md:bottom-24 left-6 md:left-16 z-30 pointer-events-none w-full max-w-5xl">
                             <span class="text-gold editorial-text text-xl md:text-3xl mb-4 block">04 / 04</span>
                             <h3 class="editorial-text text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 leading-none tracking-tight">Visual<br>Symphony</h3>
@@ -466,30 +475,25 @@
                 <a href="https://www.youtube.com/@rajunaganagouda" target="_blank" class="hover:text-gold transition-colors duration-300">YouTube</a>
             </div>
         </div>
-
         <div class="w-full text-center border-t border-white/5 pt-6">
             <p class="text-[9px] text-gold tracking-[0.3em] uppercase">Developed by Kunal Dongare</p>
         </div>
     </footer>
 
     <script>
-        // --- 1. HERO ANIMATION LOGIC (Cursor Tracking) ---
+        // HERO CURSOR LOGIC
         if (window.innerWidth > 768) {
             const cursorGlow = document.getElementById('cursor-glow');
             const heroHeader = document.getElementById('hero-header');
-            
             heroHeader.addEventListener('mousemove', (e) => {
                 cursorGlow.style.opacity = '1';
                 cursorGlow.style.left = e.clientX + 'px';
                 cursorGlow.style.top = e.clientY + 'px';
             });
-            
-            heroHeader.addEventListener('mouseleave', () => {
-                cursorGlow.style.opacity = '0';
-            });
+            heroHeader.addEventListener('mouseleave', () => cursorGlow.style.opacity = '0');
         }
 
-        // --- 2. FLAWLESS MAILTO POPUP SCRIPT ---
+        // FLAWLESS MAILTO POPUP SCRIPT
         function sendMailPopup() {
             const emailInput = document.getElementById('userEmail');
             const messageInput = document.getElementById('userMessage');
@@ -511,7 +515,7 @@
             window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
         }
 
-        // --- 3. YOUTUBE IFRAME API (With Unmute Functionality) ---
+        // YOUTUBE IFRAME API (Unmuted Autoplay Setup)
         let ytPlayers = [];
         
         function onYouTubeIframeAPIReady() {
@@ -523,7 +527,7 @@
                 const player = new YT.Player(playerDiv.id, {
                     videoId: videoId,
                     playerVars: {
-                        'autoplay': 0, 'controls': 0, 'mute': 1, // Start muted to bypass autoplay blocks
+                        'autoplay': 0, 'controls': 0, 'mute': 0, // Unmuted by default
                         'loop': 1, 'playlist': videoId, 
                         'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'fs': 0, 'disablekb': 1
                     },
@@ -538,19 +542,6 @@
             });
         }
 
-        // Function called when "Tap to Unmute" overlay is clicked
-        function unmuteVideo(overlayElement) {
-            const slide = overlayElement.closest('.video-slide');
-            if(slide && slide.ytPlayer) {
-                slide.ytPlayer.unMute();
-                slide.ytPlayer.setVolume(100);
-                overlayElement.style.display = 'none'; // Hide the button after unmuting
-                
-                // Important: Enable pointer events on iframe so user can pause it if they want
-                slide.querySelector('.yt-iframe-wrapper iframe').style.pointerEvents = 'auto';
-            }
-        }
-
         document.addEventListener("DOMContentLoaded", () => {
             
             // MAGNETIC BUTTONS
@@ -562,9 +553,7 @@
                         const y = e.clientY - rect.top - rect.height / 2;
                         btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
                     });
-                    btn.addEventListener('mouseleave', () => {
-                        btn.style.transform = `translate(0px, 0px)`;
-                    });
+                    btn.addEventListener('mouseleave', () => btn.style.transform = `translate(0px, 0px)`);
                 });
             }
 
@@ -622,13 +611,8 @@
                     } else {
                         document.querySelectorAll('.video-slide').forEach(slide => {
                             slide.classList.remove('is-playing');
-                            
-                            // Reset mute and show overlay again when leaving page
                             if(slide.ytPlayer && typeof slide.ytPlayer.pauseVideo === 'function') {
-                                slide.ytPlayer.mute();
                                 slide.ytPlayer.pauseVideo();
-                                slide.querySelector('.unmute-btn').style.display = 'flex';
-                                slide.querySelector('.yt-iframe-wrapper iframe').style.pointerEvents = 'none';
                             }
                         });
                     }
@@ -650,11 +634,7 @@
                             } else {
                                 slide.classList.remove('is-playing');
                                 if (slide.ytPlayer && typeof slide.ytPlayer.pauseVideo === 'function') {
-                                    // Reset when swiped away
-                                    slide.ytPlayer.mute();
                                     slide.ytPlayer.pauseVideo();
-                                    slide.querySelector('.unmute-btn').style.display = 'flex';
-                                    slide.querySelector('.yt-iframe-wrapper iframe').style.pointerEvents = 'none';
                                 }
                             }
                         });
